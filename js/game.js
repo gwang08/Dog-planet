@@ -95,6 +95,7 @@ function loop(ts){
 // ---- input wiring ----
 addEventListener('keydown', e=>{ const k=e.key.toLowerCase();
   if(dlg){ if(k===' '||k==='enter'||k==='arrowright'){ e.preventDefault(); advanceDialogue(); } return; }
+  if(gs===ST.SPLASH){ if(k===' '||k==='enter'){ e.preventDefault(); afterSplash(); } return; }
   if(gs===ST.EXPLORE && EX.cap){ if(k===' '||k==='enter'||k==='arrowright'){ e.preventDefault(); EX.advanceCap(); } return; }
   if(gs===ST.BOSS){ if(k===' '){ e.preventDefault(); CB.dodge(); }
     else if(k>='1'&&k<='4') CB.useSkill(+k-1); }
