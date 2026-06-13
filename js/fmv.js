@@ -34,8 +34,12 @@
   function pauseAll() { try { vid.pause(); } catch (e) {} try { vidbg.pause(); } catch (e) {} tensionOff(); }
   function hideHud() { mapBtn.classList.remove('show'); backBtn.classList.remove('show');
     choicesEl.classList.remove('show'); subEl.classList.remove('show'); fadeEl.classList.remove('show', 'busy'); freeze.classList.remove('show'); }
-  function showMap() { pauseAll(); hideHud(); startEl.classList.add('hide'); $('splash').classList.remove('show', 'hide');
-    renderMap(); mapEl.classList.add('show'); }
+  function setView(tree) { $('viewChapters').style.display = tree ? 'none' : 'flex'; $('viewTree').style.display = tree ? 'flex' : 'none'; }
+  // chapter select (3 chapters only — no roadmap): shown by NEW GAME and end-of-chapter
+  function showChapters() { pauseAll(); hideHud(); startEl.classList.add('hide'); $('splash').classList.remove('show', 'hide'); renderMap(); setView(false); mapEl.classList.add('show'); }
+  // roadmap (branch tree to jump scenes): shown only IN-GAME via the map button
+  function showRoadmap() { pauseAll(); hideHud(); renderMap(); setView(true); mapEl.classList.add('show'); }
+  function resumeGame() { mapEl.classList.remove('show'); if (curId && STORY.nodes[curId]) { mapBtn.classList.add('show'); backBtn.classList.toggle('show', history.length > 0); try { vid.play(); } catch (e) {} try { vidbg.play(); } catch (e) {} } }
   function goHome() { pauseAll(); hideHud(); mapEl.classList.remove('show'); $('splash').classList.remove('show', 'hide'); startEl.classList.remove('hide'); }
   function startChapter1() {
     mapEl.classList.remove('show'); userMuted = false; history = [];
@@ -93,7 +97,7 @@
   }
 
   function navigate(next) { // forward via a choice — remember decision points for BACK
-    if (next === 'MAP') { showMap(); return; }              // special target → open journey map
+    if (next === 'MAP') { showChapters(); return; }          // special target → chapter select
     if (node && node.choices && node.choices.length > 1) history.push(curId);
     go(next);
   }
@@ -152,11 +156,13 @@
 
   backBtn.onclick = back;
 
-  $('startBtn').onclick = showMap;            // NEW GAME → journey map
-  $('playCh1').onclick = startChapter1;       // PLAY FROM START → Chapter 1
-  $('mapHome').onclick = goHome;              // map → landing
-  mapBtn.onclick = showMap;                   // in-game → open map
-  // clickable scene nodes on the map → jump to that scene and keep playing
+  $('startBtn').onclick = showChapters;       // NEW GAME → chapter select (3 chapters)
+  $('playNow').onclick = startChapter1;       // Chapter 1 card "PLAY NOW" → play from start
+  $('playCh1').onclick = startChapter1;       // roadmap "PLAY FROM START" → play from start
+  $('mapHome').onclick = goHome;              // chapter select → landing
+  $('treeBack').onclick = resumeGame;         // roadmap "BACK" → resume the current scene
+  mapBtn.onclick = showRoadmap;               // in-game map button → roadmap (jump scenes)
+  // clickable scene nodes on the roadmap → jump to that scene and keep playing
   mapEl.querySelectorAll('[data-go]').forEach((el) => { el.onclick = () => jump(el.getAttribute('data-go')); });
   $('muteBtn').onclick = () => {
     userMuted = !userMuted; $('muteBtn').textContent = userMuted ? '🔇' : '🔊'; applyMute();

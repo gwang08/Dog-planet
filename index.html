@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <title>MAME: The Last Shiba — Chapter 1</title>
+<link rel="icon" type="image/png" href="assets/mame.png" />
+<link rel="apple-touch-icon" href="assets/mame-hero.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=block" rel="stylesheet" />
@@ -182,8 +184,10 @@
     letter-spacing: 2px; cursor: pointer; color: #1a1208; background: linear-gradient(180deg,#ffd84a,#f5a300);
     border: 2px solid #120d02; border-radius: 12px; box-shadow: 0 5px 0 #946700,0 8px 18px rgba(0,0,0,.5); transition: transform .1s; }
   #map .btn:hover { transform: translateY(-2px); }
-  #map .map-home { position: absolute; top: 14px; left: 16px; background: rgba(0,0,0,.5); color: #fff; border: none;
-    border-radius: 20px; padding: 8px 16px; cursor: pointer; font-weight: 700; font-family: 'Orbitron'; font-size: 12px; }
+  #map .map-view { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; width: 100%; max-width: 1080px; }
+  #map .map-back { align-self: flex-start; background: rgba(0,0,0,.5); color: #fff; border: none; border-radius: 20px;
+    padding: 8px 16px; cursor: pointer; font-weight: 700; font-family: 'Orbitron'; font-size: 12px; }
+  #map .map-back:hover { background: rgba(255,59,107,.7); }
   /* responsive: landing on small / portrait screens */
   @media (max-width: 820px) {
     #start { justify-content: flex-start; padding-top: 5vh; }
@@ -282,38 +286,48 @@
   </div>
 
   <div id="map">
-    <button class="map-home" id="mapHome">⌂ HOME</button>
-    <h2 class="map-title">JOURNEY MAP</h2>
-    <div class="chapters">
-      <div class="chap unlocked">
-        <div class="chap-num">CHAPTER 1</div>
-        <div class="chap-name">The Last Shiba — Pump Planet</div>
-        <div class="tree">
-          <button class="tnode" data-go="V1">▸ Wake Up</button>
-          <div class="branchwrap"><div class="tbranch">
-            <button class="tnode" data-go="V2A">Charge</button>
-            <button class="tnode" data-go="V2B">Scout</button>
-          </div></div>
-          <button class="tnode" data-go="V3">Moo Deng</button>
-          <button class="tnode" data-go="V4">Penguin</button>
-          <div class="tends">
-            <button class="tend" id="endTrue" data-go="V5A">🏆 True Ending</button>
-            <button class="tend" id="endBad" data-go="V5B">💀 Bad Ending</button>
-          </div>
+    <!-- LEVEL 1: chapter select (3 chapters only) -->
+    <div class="map-view" id="viewChapters">
+      <button class="map-back" id="mapHome">⌂ HOME</button>
+      <h2 class="map-title">SELECT CHAPTER</h2>
+      <div class="chapters">
+        <div class="chap unlocked" id="chap1Card">
+          <div class="chap-num">CHAPTER 1</div>
+          <div class="chap-name">The Last Shiba — Pump Planet</div>
+          <div class="map-count" id="mapCount">Endings found: 0 / 2</div>
+          <button class="btn" id="playNow">▶ PLAY NOW</button>
         </div>
-        <div class="map-count" id="mapCount">Endings found: 0 / 2</div>
-        <button class="btn" id="playCh1">▸ PLAY FROM START</button>
+        <div class="chap locked">
+          <div class="chap-num">CHAPTER 2</div>
+          <div class="chap-name">Dark Side of the Moon</div>
+          <div class="lock">🔒 COMING SOON</div>
+        </div>
+        <div class="chap locked">
+          <div class="chap-num">CHAPTER 3</div>
+          <div class="chap-name">???</div>
+          <div class="lock">🔒 COMING SOON</div>
+        </div>
       </div>
-      <div class="chap locked">
-        <div class="chap-num">CHAPTER 2</div>
-        <div class="chap-name">Dark Side of the Moon</div>
-        <div class="lock">🔒 COMING SOON</div>
+    </div>
+
+    <!-- LEVEL 2: chapter roadmap (branch tree — jump to any scene) -->
+    <div class="map-view" id="viewTree" style="display:none">
+      <button class="map-back" id="treeBack">◀ BACK</button>
+      <h2 class="map-title">CHAPTER 1 · ROADMAP</h2>
+      <div class="tree">
+        <button class="tnode" data-go="V1">▸ Wake Up</button>
+        <div class="branchwrap"><div class="tbranch">
+          <button class="tnode" data-go="V2A">Charge</button>
+          <button class="tnode" data-go="V2B">Scout</button>
+        </div></div>
+        <button class="tnode" data-go="V3">Moo Deng</button>
+        <button class="tnode" data-go="V4">Penguin</button>
+        <div class="tends">
+          <button class="tend" id="endTrue" data-go="V5A">🏆 True Ending</button>
+          <button class="tend" id="endBad" data-go="V5B">💀 Bad Ending</button>
+        </div>
       </div>
-      <div class="chap locked">
-        <div class="chap-num">CHAPTER 3</div>
-        <div class="chap-name">???</div>
-        <div class="lock">🔒 COMING SOON</div>
-      </div>
+      <button class="btn" id="playCh1">▸ PLAY FROM START</button>
     </div>
   </div>
 
