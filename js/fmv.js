@@ -5,7 +5,7 @@
 // BACK button returns to the previous decision so you can take a different path.
 (function () {
   const $ = (id) => document.getElementById(id);
-  const vid = $('vid'), subEl = $('sub'), choicesEl = $('choices'),
+  const vid = $('vid'), vidbg = $('vidbg'), subEl = $('sub'), choicesEl = $('choices'),
         noteEl = $('note'), startEl = $('start'), fadeEl = $('fade'), backBtn = $('backBtn'),
         tension = $('tension');
 
@@ -29,6 +29,9 @@
     if (vid.getAttribute('src') !== node.video) vid.setAttribute('src', node.video);
     try { vid.currentTime = 0; } catch (e) {}
     vid.play().catch(() => {});
+    // blurred background copy fills the letterbox (portrait); plays independently, muted
+    if (vidbg && vidbg.getAttribute('src') !== node.video) vidbg.setAttribute('src', node.video);
+    if (vidbg) { vidbg.muted = true; try { vidbg.currentTime = 0; } catch (e) {} vidbg.play().catch(() => {}); }
     backBtn.classList.toggle('show', history.length > 0);
   }
 
