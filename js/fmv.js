@@ -79,7 +79,18 @@
   $('startBtn').onclick = () => {
     startEl.classList.add('hide');
     userMuted = false;
-    playNode(STORY.start);
+    // buffer + audio-unlock the first video behind the splash (uses this click gesture)
+    const first = STORY.nodes[STORY.start];
+    vid.setAttribute('src', first.video);
+    vid.muted = true;
+    vid.play().then(() => vid.pause()).catch(() => {});
+    // show CHAPTER 1 card ~3.5s, fade, then start the scene with sound
+    const sp = $('splash');
+    sp.classList.add('show');
+    setTimeout(() => {
+      sp.classList.add('hide');
+      setTimeout(() => { sp.classList.remove('show', 'hide'); playNode(STORY.start); }, 700);
+    }, 3500);
   };
   $('muteBtn').onclick = () => {
     userMuted = !userMuted;

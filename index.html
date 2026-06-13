@@ -94,6 +94,26 @@
   }
   #startBtn:hover { transform: scale(1.06); }
   #start p { color: #9fb0cf; font-size: 14px; letter-spacing: 1px; }
+
+  /* chapter splash card (between NEW GAME and the video) */
+  #splash {
+    position: fixed; inset: 0; z-index: 18; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px; text-align: center;
+    background: radial-gradient(circle at 50% 45%, #160e2c, #04050c 80%);
+    opacity: 0; pointer-events: none; transition: opacity .7s ease;
+  }
+  #splash.show { opacity: 1; }
+  #splash.hide { opacity: 0; }
+  #splash .sp-ch {
+    font-family: 'Bangers', cursive; font-size: clamp(40px, 9vw, 96px); color: #fff;
+    letter-spacing: 4px; text-shadow: 0 0 26px #ff3b6b, 0 6px 0 #7a0e2b;
+    transform: translateY(10px); animation: spIn .8s ease forwards;
+  }
+  #splash .sp-sub {
+    font-weight: 700; font-size: clamp(15px, 3vw, 24px); color: #ffd45e; letter-spacing: 3px;
+    opacity: 0; animation: spIn .8s ease .25s forwards;
+  }
+  @keyframes spIn { to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
@@ -108,9 +128,14 @@
 
   <div id="start">
     <h1>MAME</h1>
-    <h2>THE LAST SHIBA · CHAPTER 1</h2>
-    <button id="startBtn">▶ START</button>
+    <h2>THE LAST SHIBA</h2>
+    <button id="startBtn">▶ NEW GAME</button>
     <p>An interactive film — your choices change the story.</p>
+  </div>
+
+  <div id="splash">
+    <div class="sp-ch">CHAPTER 1</div>
+    <div class="sp-sub">ASHES OF DOG PLANET</div>
   </div>
 
   <script>
