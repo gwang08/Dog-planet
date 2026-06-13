@@ -109,52 +109,41 @@
     background:rgba(10,16,34,.7); border:1px solid rgba(61,245,255,.45); border-radius:50%; transition:.15s; box-shadow:0 0 12px rgba(61,245,255,.2); }
   .socials a:hover{ color:#04060f; background:var(--neon); transform:translateY(-3px); box-shadow:0 0 22px rgba(61,245,255,.7); }
   .socials svg{ width:22px; height:22px; fill:currentColor; }
-  /* ===== MAME hero menu (official-site look) ===== */
-  #menu{ background:radial-gradient(circle at 50% 32%, #4a3a0c 0%, #1a1407 45%, #0b0904 100%); gap:10px; overflow:hidden; }
-  #menu::before{ opacity:.10; mask-image:none; }
-  #menu .hero-title{ font-family:'Bangers',cursive; font-weight:400; font-size:clamp(56px,13vw,140px); color:#fff;
-    letter-spacing:5px; line-height:.8; text-shadow:0 5px 0 rgba(0,0,0,.55),0 0 55px rgba(255,205,60,.35); }
-  #menu .hero-row{ position:relative; width:100%; max-width:1280px; height:min(58vh,520px); margin-top:-6px; }
-  #menu .mascot-wrap{ position:absolute; left:50%; bottom:0; transform:translateX(-50%); z-index:2; }
-  #menu .hero-mascot{ height:min(60vh,540px); object-fit:contain; filter:drop-shadow(0 18px 40px rgba(0,0,0,.75)); }
-  #menu .hero-sub{ position:absolute; left:3%; top:50%; transform:translateY(-50%) rotate(-5deg); z-index:3; text-align:left;
-    font-family:'Permanent Marker',cursive; font-size:clamp(30px,5.5vw,66px); color:#ffd21f; line-height:1.05;
-    text-shadow:0 3px 0 #7a5a00,0 0 26px rgba(255,210,31,.5); }
-  #menu .bg-planet{ position:absolute; bottom:-16%; left:-6%; width:min(40vw,440px); opacity:.4; z-index:0; pointer-events:none;
-    filter:drop-shadow(0 0 60px rgba(120,180,255,.4)); }
-  #menu .intro-box{ position:absolute; right:3%; top:50%; transform:translateY(-50%); z-index:3; width:min(28vw,330px); text-align:left; background:rgba(20,14,4,.72); backdrop-filter:blur(8px);
-    border:2px solid #ffd84a; border-radius:16px; padding:16px 18px; box-shadow:0 0 26px rgba(255,205,60,.22); display:flex; flex-direction:column; gap:9px; }
-  #menu .intro-box h3{ font-family:'Bangers',cursive; font-weight:400; letter-spacing:2px; font-size:22px; color:#ffd84a; }
-  #menu .intro-box p{ color:#e8d8a8; font-size:13.5px; line-height:1.5; }
-  #menu .intro-box .btn{ width:100%; padding:13px 10px; font-size:18px; margin-top:2px; }
-  #menu .intro-box .kbd{ color:#9a8a5a; font-size:10px; text-align:center; letter-spacing:1px; }
-  @media (max-width:920px){ #menu .hero-row{ position:static; height:auto; display:flex; flex-direction:column; align-items:center; gap:10px; }
-    #menu .mascot-wrap,#menu .hero-sub,#menu .intro-box{ position:static; transform:none; }
-    #menu .hero-sub{ transform:rotate(-3deg); text-align:center; } #menu .hero-mascot{ height:clamp(180px,32vh,300px); }
-    #menu .intro-box{ width:min(92vw,360px); } #menu .bg-planet{ opacity:.22; } }
-  #menu .tag{ color:#d8c89a; }
-  #menu .btn{ background:linear-gradient(180deg,#ffd84a,#f5a300); color:#1a1208; border:2px solid #120d02;
-    border-radius:12px; clip-path:none; box-shadow:0 5px 0 #946700,0 10px 22px rgba(0,0,0,.5); }
+  /* ===== MAME: ORIGINS — landing page ===== */
+  #menu{ justify-content:space-between; gap:8px; overflow:hidden; padding:clamp(16px,3vh,38px) clamp(18px,4vw,56px);
+    background:radial-gradient(circle at 72% 28%, #2a0f14 0%, #150a14 48%, #06040a 100%); }
+  #menu::before{ opacity:.06; mask-image:none; }
+  #menu .bg-planet{ position:absolute; top:5%; right:5%; width:min(24vw,280px); opacity:.5; z-index:0; pointer-events:none;
+    filter:drop-shadow(0 0 50px rgba(120,180,255,.45)); animation:floaty 8s ease-in-out infinite; }
+  #menu .land{ flex:1 1 auto; display:flex; align-items:center; justify-content:center; gap:clamp(16px,5vw,70px); flex-wrap:wrap;
+    width:100%; max-width:1180px; margin:auto; z-index:1; }
+  #menu .land-left{ flex:1 1 360px; max-width:560px; text-align:left; display:flex; flex-direction:column; align-items:flex-start; gap:13px; }
+  #menu .hero-title{ font-family:'Bangers',cursive; font-weight:400; font-size:clamp(58px,11vw,138px); color:#fff; letter-spacing:4px; line-height:.78;
+    text-shadow:0 5px 0 rgba(0,0,0,.55),0 0 50px rgba(255,90,80,.35); }
+  #menu .hero-sub{ font-family:'Permanent Marker',cursive; font-size:clamp(28px,5.4vw,56px); color:#ffd21f; line-height:1; transform:rotate(-3deg);
+    margin-left:6px; text-shadow:0 3px 0 #7a5a00,0 0 22px rgba(255,210,31,.5); }
+  #menu .land-left .tag{ text-align:left; color:#d9b9b2; max-width:480px; }
+  #menu .mbtns{ display:flex; gap:12px; flex-wrap:wrap; }
+  #menu .btn{ background:linear-gradient(180deg,#ffd84a,#f5a300); color:#1a1208; border:2px solid #120d02; border-radius:12px; clip-path:none;
+    box-shadow:0 5px 0 #946700,0 10px 22px rgba(0,0,0,.5); }
   #menu .btn:hover{ box-shadow:0 6px 0 #946700,0 12px 26px rgba(0,0,0,.55); transform:translateY(-2px); }
-  #menu .btn.alt{ background:#120d02; color:#ffd84a; border:2px solid #ffd84a; box-shadow:0 5px 0 #5a4400; }
-  #menu .kbd{ color:#9a8a5a; }
+  #menu .btn.alt{ background:#1a0a0a; color:#ff8a78; border:2px solid #ff6a5a; box-shadow:0 5px 0 #5a1a14; }
+  #menu .kbd{ color:#806a6a; }
+  #menu .land-right{ flex:0 0 auto; display:flex; justify-content:center; }
+  #menu .hero-mascot{ height:clamp(240px,54vh,520px); object-fit:contain; filter:drop-shadow(0 16px 40px rgba(0,0,0,.8)); animation:floaty 3.8s ease-in-out infinite; }
+  #menu .land-foot{ z-index:1; display:flex; justify-content:center; padding-top:4px; }
   #menu .socials a{ color:#ffd84a; border-color:#ffd84a88; background:rgba(0,0,0,.4); box-shadow:none; }
   #menu .socials a:hover{ color:#120d02; background:#ffd84a; }
-  /* menu animations */
-  #menu .hero-title{ animation:popin .6s ease both, glowpulse 2.8s ease-in-out 0.6s infinite; }
-  #menu .hero-sub{ animation:fadein .7s ease .2s both; }
-  #menu .mascot-wrap{ animation:fadein .6s ease .25s both; }
-  #menu .hero-mascot{ animation:floaty 3.6s ease-in-out infinite; }
-  #menu .intro-box{ animation:fadein .7s ease .35s both; }
-  @keyframes fadein{ from{ opacity:0; } to{ opacity:1; } }
-  #menu .heroGlow{ position:absolute; width:min(70vw,520px); height:min(70vw,520px); border-radius:50%; z-index:0; pointer-events:none;
-    background:radial-gradient(circle,rgba(255,205,60,.22),transparent 65%); animation:pulseGlow 3.6s ease-in-out infinite; }
-  @keyframes popin{ from{ opacity:0; transform:translateY(24px) scale(.95); } to{ opacity:1; transform:none; } }
-  @keyframes floaty{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-16px); } }
-  @keyframes sway{ 0%,100%{ transform:rotate(-3deg); } 50%{ transform:rotate(-1deg); } }
-  @keyframes glowpulse{ 0%,100%{ text-shadow:0 6px 0 rgba(0,0,0,.5),0 0 40px rgba(255,205,60,.3); } 50%{ text-shadow:0 6px 0 rgba(0,0,0,.5),0 0 75px rgba(255,205,60,.7); } }
-  @keyframes pulseGlow{ 0%,100%{ transform:scale(1); opacity:.7; } 50%{ transform:scale(1.12); opacity:1; } }
-  #menu .hero-title,#menu .hero-sub,#menu .hero-mascot,#menu .tag,#menu .socials,#menu .kbd,#menu .mbtns{ position:relative; z-index:1; }
+  #menu .hero-title{ animation:popin .6s ease both, glowpulse 3s ease-in-out .6s infinite; }
+  #menu .hero-sub{ animation:fadein .8s ease .2s both; }
+  #menu .land-left .tag,#menu .mbtns,#menu .kbd,#menu .land-foot{ animation:fadein .8s ease .35s both; }
+  @keyframes fadein{ from{opacity:0;} to{opacity:1;} }
+  @keyframes popin{ from{ opacity:0; transform:translateY(20px) scale(.96); } to{ opacity:1; transform:none; } }
+  @keyframes floaty{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-13px); } }
+  @keyframes glowpulse{ 0%,100%{ text-shadow:0 5px 0 rgba(0,0,0,.55),0 0 40px rgba(255,90,80,.3); } 50%{ text-shadow:0 5px 0 rgba(0,0,0,.55),0 0 70px rgba(255,90,80,.6); } }
+  @media (max-width:820px){ #menu .land{ flex-direction:column-reverse; gap:6px; }
+    #menu .land-left{ align-items:center; text-align:center; } #menu .land-left .tag{ text-align:center; } #menu .mbtns{ justify-content:center; }
+    #menu .hero-sub{ margin-left:0; } #menu .hero-mascot{ height:clamp(190px,30vh,300px); } #menu .bg-planet{ opacity:.25; width:40vw; } }
 </style>
 </head>
 <body>
@@ -173,20 +162,21 @@
 <div id="skills"></div>
 
 <div class="overlay" id="menu">
-  <div class="heroGlow"></div>
   <img class="bg-planet" src="assets/dogplanet.png" alt="">
-  <div class="hero-title">MAME</div>
-  <div class="hero-row">
-    <div class="hero-sub">THE LAST<br>SHIBA</div>
-    <div class="mascot-wrap"><img class="hero-mascot" id="heroMascot" src="assets/mame-hero.png" alt="MAME"></div>
-    <div class="intro-box">
-      <h3>▸ THE STORY</h3>
-      <p>The Last Shiba wakes in the ashes of Dog Planet with no memory. He journeys across 5 worlds to <b>Pump Planet</b> to find his roots — surviving skill-based boss duels along the way.</p>
-      <button class="btn" id="playBtn">▸ NEW GAME</button>
-      <button class="btn alt" id="contBtn" style="display:none">▸ CONTINUE</button>
+  <div class="land">
+    <div class="land-left">
+      <div class="hero-title">MAME</div>
+      <div class="hero-sub">THE LAST<br>SHIBA</div>
+      <p class="tag">He dreams of home — Dog Planet. But he woke up on <b style="color:#ff8a78">Pump Planet</b>. Journey across 5 worlds and survive skill-based boss duels to find his roots.</p>
+      <div class="mbtns">
+        <button class="btn" id="playBtn">▸ NEW GAME</button>
+        <button class="btn alt" id="contBtn" style="display:none">▸ CONTINUE</button>
+      </div>
       <div class="kbd">WASD / DRAG · SPACE = DODGE · 1–4 = SKILLS</div>
     </div>
+    <div class="land-right"><img class="hero-mascot" id="heroMascot" src="assets/mame-hero.png" alt="MAME"></div>
   </div>
+  <div class="land-foot">
   <div class="socials">
     <a href="https://x.com/mamebnb" target="_blank" rel="noopener" aria-label="X">
       <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>
@@ -197,6 +187,7 @@
     <a href="https://mamebnb.com/" target="_blank" rel="noopener" aria-label="Website">
       <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.93 6h-2.95a15.6 15.6 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a7.96 7.96 0 0 1 0-4h3.38a16.5 16.5 0 0 0 0 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.99 7.99 0 0 1 5.07 16zm2.95-8H5.07a7.99 7.99 0 0 1 4.33-3.56A15.6 15.6 0 0 0 8.02 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82A15.6 15.6 0 0 1 12 19.96zM14.34 14H9.66a14.6 14.6 0 0 1 0-4h4.68a14.6 14.6 0 0 1 0 4zm.27 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a7.99 7.99 0 0 1-4.33 3.56zM16.36 14a16.5 16.5 0 0 0 0-4h3.38a7.96 7.96 0 0 1 0 4h-3.38z"/></svg>
     </a>
+  </div>
   </div>
 </div>
 
