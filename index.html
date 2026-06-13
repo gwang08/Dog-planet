@@ -230,7 +230,7 @@
   #rotate h3 { font-family: 'Bangers', cursive; font-size: clamp(28px,8vw,40px); letter-spacing: 2px; color: #ffd45e; }
   #rotate p { color: #9fb0cf; max-width: 320px; font-size: 14px; line-height: 1.5; }
   @keyframes rothint { 0%,100% { transform: rotate(-90deg); } 45%,55% { transform: rotate(0deg); } }
-  @media (max-width: 900px) and (orientation: portrait) { body.playing #rotate { display: flex; } }
+  /* play in BOTH orientations — rotate gate disabled (portrait uses blurred-fill background) */
 
   /* chapter splash card (between NEW GAME and the video) */
   #splash {
