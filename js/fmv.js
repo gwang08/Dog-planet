@@ -66,6 +66,10 @@
     // blurred background copy fills the letterbox (portrait); plays independently, muted
     if (vidbg && vidbg.getAttribute('src') !== node.video) vidbg.setAttribute('src', node.video);
     if (vidbg) { vidbg.muted = true; try { vidbg.currentTime = 0; } catch (e) {} vidbg.play().catch(() => {}); }
+    // hold the scene paused if the phone is still portrait — only play once rotated to landscape
+    if (window.matchMedia('(max-width: 900px) and (orientation: portrait)').matches) {
+      try { vid.pause(); } catch (e) {} try { vidbg.pause(); } catch (e) {} tensionOff();
+    }
     // record reached endings for the journey map
     if (id === 'ENDTRUE' || id === 'ENDBAD') { const p = getProg(); p[id === 'ENDTRUE' ? 'true' : 'bad'] = true; setProg(p); }
     document.body.classList.add('playing'); // enables the rotate-to-landscape gate on phones
@@ -183,8 +187,8 @@
   const mqPortrait = window.matchMedia('(max-width: 900px) and (orientation: portrait)');
   function onOrient() {
     if (!document.body.classList.contains('playing')) return;
-    if (mqPortrait.matches) { try { vid.pause(); } catch (e) {} tensionOff(); }
-    else { try { vid.play(); } catch (e) {} if (choiceMode) tensionOn(); }
+    if (mqPortrait.matches) { try { vid.pause(); } catch (e) {} try { vidbg.pause(); } catch (e) {} tensionOff(); }
+    else { try { vid.play(); } catch (e) {} try { vidbg.play(); } catch (e) {} if (choiceMode) tensionOn(); }
   }
   if (mqPortrait.addEventListener) mqPortrait.addEventListener('change', onOrient); else if (mqPortrait.addListener) mqPortrait.addListener(onOrient);
   addEventListener('resize', onOrient);
