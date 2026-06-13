@@ -6,18 +6,22 @@
 (function () {
   const $ = (id) => document.getElementById(id);
   const vid = $('vid'), subEl = $('sub'), choicesEl = $('choices'),
-        noteEl = $('note'), startEl = $('start'), fadeEl = $('fade'), backBtn = $('backBtn');
+        noteEl = $('note'), startEl = $('start'), fadeEl = $('fade'), backBtn = $('backBtn'),
+        tension = $('tension');
 
   let node = null, curId = null, cues = [], choiceMode = false, tailStart = 0,
       userMuted = false, history = [];
   const TAIL = 3; // seconds of ending to loop while waiting for a choice
 
-  function applyMute() { vid.muted = choiceMode ? true : userMuted; } // loop is always silent
+  // video is muted during the choice-loop; suspense music plays instead (until a choice)
+  function applyMute() { vid.muted = choiceMode ? true : userMuted; if (tension) tension.muted = userMuted; }
+  function tensionOn() { if (!tension) return; tension.volume = 0.4; tension.muted = userMuted; tension.currentTime = 0; tension.play().catch(() => {}); }
+  function tensionOff() { if (tension) { tension.pause(); } }
 
   function setNode(id) {
     node = STORY.nodes[id]; curId = id;
     if (!node) return;
-    choiceMode = false; applyMute();
+    choiceMode = false; tensionOff(); applyMute();
     choicesEl.classList.remove('show'); choicesEl.innerHTML = '';
     subEl.classList.remove('show'); subEl.textContent = '';
     noteEl.textContent = node.note || ''; noteEl.classList.toggle('show', !!node.note);
@@ -30,6 +34,7 @@
 
   // fade through black, then switch scene
   function go(id, isBack) {
+    tensionOff();
     fadeEl.classList.add('show');
     setTimeout(() => { setNode(id); setTimeout(() => fadeEl.classList.remove('show'), 60); }, 420);
   }
@@ -60,6 +65,7 @@
     });
     choicesEl.classList.add('show');
     loopTail();
+    tensionOn(); // suspense music while waiting for the player's choice
   }
 
   vid.addEventListener('timeupdate', () => {
