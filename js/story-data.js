@@ -88,7 +88,7 @@ const STORY = {
         { s: 8.5, e: 13.1, t: 'Run all you want, Penguin — I’ll chase you to the moon and back!' },
       ],
       note: 'CHAPTER 1 COMPLETE — Chapter 2: COMING SOON',
-      choices: [ { t: '◀ Play again', next: 'V1' } ],
+      choices: [ { t: '🗺 Journey Map', next: 'MAP' }, { t: '↻ Play from start', next: 'V1' } ],
     },
     ENDBAD: {
       video: 'assets/scenes/chapter1-endbad-caught.mp4',
@@ -97,7 +97,7 @@ const STORY = {
         { s: 3.5, e: 6.5, t: 'Pump.fun tightens its grip on the galaxy.' },
       ],
       note: 'BAD ENDING',
-      choices: [ { t: '↻ Try again', next: 'V1' } ],
+      choices: [ { t: '↻ Try Again — back to the choice', next: 'V4' }, { t: '🗺 Journey Map', next: 'MAP' } ],
     },
   },
 };

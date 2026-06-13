@@ -93,6 +93,7 @@
   }
 
   function navigate(next) { // forward via a choice — remember decision points for BACK
+    if (next === 'MAP') { showMap(); return; }              // special target → open journey map
     if (node && node.choices && node.choices.length > 1) history.push(curId);
     go(next);
   }
