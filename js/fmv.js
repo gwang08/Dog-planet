@@ -7,7 +7,7 @@
   const $ = (id) => document.getElementById(id);
   const vid = $('vid'), vidbg = $('vidbg'), freeze = $('freeze'), subEl = $('sub'), choicesEl = $('choices'),
         noteEl = $('note'), startEl = $('start'), fadeEl = $('fade'), backBtn = $('backBtn'),
-        tension = $('tension');
+        tension = $('tension'), mapEl = $('map'), mapBtn = $('mapBtn');
 
   let node = null, curId = null, cues = [], choiceMode = false, tailStart = 0,
       userMuted = false, history = [];
@@ -21,6 +21,30 @@
   // preload upcoming videos so picking a choice switches instantly (no black "lag")
   const preloadCache = {};
   function preload(src) { if (!src || preloadCache[src]) return; const v = document.createElement('video'); v.preload = 'auto'; v.muted = true; v.src = src; preloadCache[src] = v; }
+
+  // ---- progress tracking + journey map ----
+  function getProg() { try { return JSON.parse(localStorage.getItem('mame_ch1') || '{}'); } catch (e) { return {}; } }
+  function setProg(p) { try { localStorage.setItem('mame_ch1', JSON.stringify(p)); } catch (e) {} }
+  function renderMap() {
+    const p = getProg();
+    $('endTrue').classList.toggle('done', !!p.true);
+    $('endBad').classList.toggle('done', !!p.bad);
+    $('mapCount').textContent = 'Endings found: ' + ((p.true ? 1 : 0) + (p.bad ? 1 : 0)) + ' / 2';
+  }
+  function pauseAll() { try { vid.pause(); } catch (e) {} try { vidbg.pause(); } catch (e) {} tensionOff(); }
+  function hideHud() { mapBtn.classList.remove('show'); backBtn.classList.remove('show');
+    choicesEl.classList.remove('show'); subEl.classList.remove('show'); fadeEl.classList.remove('show', 'busy'); freeze.classList.remove('show'); }
+  function showMap() { pauseAll(); hideHud(); startEl.classList.add('hide'); $('splash').classList.remove('show', 'hide');
+    renderMap(); mapEl.classList.add('show'); }
+  function goHome() { pauseAll(); hideHud(); mapEl.classList.remove('show'); $('splash').classList.remove('show', 'hide'); startEl.classList.remove('hide'); }
+  function startChapter1() {
+    mapEl.classList.remove('show'); userMuted = false; history = [];
+    const first = STORY.nodes[STORY.start];
+    vid.setAttribute('src', first.video); vid.muted = true; vid.play().then(() => vid.pause()).catch(() => {});
+    const sp = $('splash'); sp.classList.add('show');
+    setTimeout(() => { sp.classList.add('hide'); setTimeout(() => { sp.classList.remove('show', 'hide'); setNode(STORY.start); }, 700); }, 3500);
+  }
+  function jump(id) { if (!STORY.nodes[id]) return; mapEl.classList.remove('show'); history = []; go(id); } // jump to any scene from the map
 
   function setNode(id) {
     node = STORY.nodes[id]; curId = id;
@@ -36,6 +60,9 @@
     // blurred background copy fills the letterbox (portrait); plays independently, muted
     if (vidbg && vidbg.getAttribute('src') !== node.video) vidbg.setAttribute('src', node.video);
     if (vidbg) { vidbg.muted = true; try { vidbg.currentTime = 0; } catch (e) {} vidbg.play().catch(() => {}); }
+    // record reached endings for the journey map
+    if (id === 'ENDTRUE' || id === 'ENDBAD') { const p = getProg(); p[id === 'ENDTRUE' ? 'true' : 'bad'] = true; setProg(p); }
+    mapBtn.classList.add('show'); // map jump available during play
     backBtn.classList.toggle('show', history.length > 0);
     // start buffering this scene's possible next videos right away (kills the black "lag")
     (node.choices || []).forEach((c) => { const n = STORY.nodes[c.next]; if (n) preload(n.video); });
@@ -124,18 +151,12 @@
 
   backBtn.onclick = back;
 
-  $('startBtn').onclick = () => {
-    startEl.classList.add('hide');
-    userMuted = false; history = [];
-    const first = STORY.nodes[STORY.start];
-    vid.setAttribute('src', first.video); vid.muted = true;
-    vid.play().then(() => vid.pause()).catch(() => {});
-    const sp = $('splash'); sp.classList.add('show');
-    setTimeout(() => {
-      sp.classList.add('hide');
-      setTimeout(() => { sp.classList.remove('show', 'hide'); setNode(STORY.start); }, 700);
-    }, 3500);
-  };
+  $('startBtn').onclick = showMap;            // NEW GAME → journey map
+  $('playCh1').onclick = startChapter1;       // PLAY FROM START → Chapter 1
+  $('mapHome').onclick = goHome;              // map → landing
+  mapBtn.onclick = showMap;                   // in-game → open map
+  // clickable scene nodes on the map → jump to that scene and keep playing
+  mapEl.querySelectorAll('[data-go]').forEach((el) => { el.onclick = () => jump(el.getAttribute('data-go')); });
   $('muteBtn').onclick = () => {
     userMuted = !userMuted; $('muteBtn').textContent = userMuted ? '🔇' : '🔊'; applyMute();
   };
