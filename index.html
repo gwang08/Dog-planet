@@ -172,10 +172,17 @@
   #map .chap { width: 320px; max-width: 92vw; border-radius: 16px; padding: 18px; text-align: center;
     background: rgba(12,14,26,.72); border: 1px solid rgba(255,255,255,.12); display: flex; flex-direction: column; gap: 9px; }
   #map .chap.unlocked { border-color: #ffd45e88; box-shadow: 0 0 26px rgba(255,212,94,.18); }
-  #map .chap.locked { opacity: .55; filter: grayscale(.5); }
+  #map .chap.locked { opacity: .6; }
+  /* character "bot" banner on top of each card */
+  #map .chap-thumb { width: 100%; height: 132px; object-fit: contain; border-radius: 12px; margin-bottom: 2px;
+    background: radial-gradient(circle at 50% 60%, rgba(255,255,255,.08), rgba(0,0,0,.25)); }
+  #map .chap.locked .chap-thumb { filter: grayscale(.85) brightness(.45); }
   #map .chap-num { font-family: 'Orbitron'; font-weight: 900; letter-spacing: 3px; color: #ffd45e; font-size: 14px; }
   #map .chap-name { font-weight: 700; color: #eaf2ff; font-size: 17px; }
-  #map .lock { margin: auto 0; color: #9fb0cf; font-weight: 700; letter-spacing: 1px; padding: 26px 0; font-family: 'Orbitron'; }
+  #map .lock { color: #9fb0cf; font-weight: 700; letter-spacing: 1px; padding: 14px 0; font-family: 'Orbitron'; font-size: 13px; }
+  /* push button / lock to the bottom so every card's CTA lines up → equal-looking cards */
+  #map .chap .btn, #map .chap .lock { margin-top: auto; }
+  #map .map-count { min-height: 18px; }
   #map .tree { display: flex; flex-direction: column; gap: 5px; align-items: center; margin: 4px 0; font-size: 13px; }
   #map .tnode { color: #cfe0ff; font-weight: 600; font-family: 'Rajdhani', sans-serif; cursor: pointer;
     background: rgba(255,255,255,.06); border: 1px solid #ffffff22; border-radius: 8px; padding: 5px 14px; transition: .12s; }
@@ -315,17 +322,21 @@
       <h2 class="map-title">SELECT CHAPTER</h2>
       <div class="chapters">
         <div class="chap unlocked" id="chap1Card">
+          <img class="chap-thumb" src="assets/mame-hero.png" alt="" />
           <div class="chap-num">CHAPTER 1</div>
           <div class="chap-name">The Last Shiba — Pump Planet</div>
           <div class="map-count" id="mapCount">Endings found: 0 / 2</div>
           <button class="btn" id="playNow">▶ PLAY NOW</button>
         </div>
-        <div class="chap unlocked">
+        <div class="chap locked" id="chap2Card">
+          <img class="chap-thumb" src="assets/sahur.png" alt="" />
           <div class="chap-num">CHAPTER 2</div>
           <div class="chap-name">Dark Side of the Moon</div>
-          <button class="btn" id="playCh2">▶ PLAY NOW</button>
+          <div class="lock" id="chap2Lock">🔒 Finish Chapter 1 to unlock</div>
+          <button class="btn" id="playCh2" style="display:none">▶ PLAY NOW</button>
         </div>
         <div class="chap locked">
+          <img class="chap-thumb" src="assets/dogplanet.png" alt="" />
           <div class="chap-num">CHAPTER 3</div>
           <div class="chap-name">???</div>
           <div class="lock">🔒 COMING SOON</div>

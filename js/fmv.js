@@ -37,6 +37,11 @@
   function renderMap() {
     const p = getProg();
     const c = $('mapCount'); if (c) c.textContent = 'Endings found: ' + ((p.true ? 1 : 0) + (p.bad ? 1 : 0)) + ' / 2';
+    // Chapter 2 unlocks only after Chapter 1's true ending is reached
+    const ok2 = !!p.true, card2 = $('chap2Card'), lock2 = $('chap2Lock'), play2 = $('playCh2');
+    if (card2) { card2.classList.toggle('unlocked', ok2); card2.classList.toggle('locked', !ok2); }
+    if (lock2) lock2.style.display = ok2 ? 'none' : '';
+    if (play2) play2.style.display = ok2 ? '' : 'none';
   }
   // build the in-game roadmap (jump buttons) for the current chapter
   function renderRoadmap() {
