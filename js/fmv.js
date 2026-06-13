@@ -7,14 +7,16 @@
   const $ = (id) => document.getElementById(id);
   const vid = $('vid'), vidbg = $('vidbg'), freeze = $('freeze'), subEl = $('sub'), choicesEl = $('choices'),
         noteEl = $('note'), startEl = $('start'), fadeEl = $('fade'), backBtn = $('backBtn'),
-        tension = $('tension'), mapEl = $('map'), mapBtn = $('mapBtn');
+        tension = $('tension'), menubgm = $('menubgm'), mapEl = $('map'), mapBtn = $('mapBtn');
 
   let node = null, curId = null, cues = [], choiceMode = false, tailStart = 0,
       userMuted = false, history = [];
   const TAIL = 3; // seconds of ending to loop while waiting for a choice
 
   // video is muted during the choice-loop; suspense music plays instead (until a choice)
-  function applyMute() { vid.muted = choiceMode ? true : userMuted; if (tension) tension.muted = userMuted; }
+  function applyMute() { vid.muted = choiceMode ? true : userMuted; if (tension) tension.muted = userMuted; if (menubgm) menubgm.muted = userMuted; }
+  function menuBgmOn() { if (!menubgm) return; menubgm.volume = 0.32; menubgm.muted = userMuted; menubgm.play().catch(() => {}); }
+  function menuBgmOff() { if (menubgm) menubgm.pause(); }
   function tensionOn() { if (!tension) return; tension.volume = 0.4; tension.muted = userMuted; tension.currentTime = 0; tension.play().catch(() => {}); }
   function tensionOff() { if (tension) { tension.pause(); } }
 
@@ -36,13 +38,13 @@
     choicesEl.classList.remove('show'); subEl.classList.remove('show'); fadeEl.classList.remove('show', 'busy'); freeze.classList.remove('show'); }
   function setView(tree) { $('viewChapters').style.display = tree ? 'none' : 'flex'; $('viewTree').style.display = tree ? 'flex' : 'none'; }
   // chapter select (3 chapters only — no roadmap): shown by NEW GAME and end-of-chapter
-  function showChapters() { pauseAll(); hideHud(); startEl.classList.add('hide'); $('splash').classList.remove('show', 'hide'); renderMap(); setView(false); mapEl.classList.add('show'); }
+  function showChapters() { pauseAll(); hideHud(); startEl.classList.add('hide'); $('splash').classList.remove('show', 'hide'); renderMap(); setView(false); mapEl.classList.add('show'); menuBgmOn(); }
   // roadmap (branch tree to jump scenes): shown only IN-GAME via the map button
-  function showRoadmap() { pauseAll(); hideHud(); renderMap(); setView(true); mapEl.classList.add('show'); }
-  function resumeGame() { mapEl.classList.remove('show'); if (curId && STORY.nodes[curId]) { document.body.classList.add('playing'); mapBtn.classList.add('show'); backBtn.classList.toggle('show', history.length > 0); try { vid.play(); } catch (e) {} try { vidbg.play(); } catch (e) {} } }
-  function goHome() { pauseAll(); hideHud(); mapEl.classList.remove('show'); $('splash').classList.remove('show', 'hide'); startEl.classList.remove('hide'); }
+  function showRoadmap() { pauseAll(); hideHud(); menuBgmOff(); renderMap(); setView(true); mapEl.classList.add('show'); }
+  function resumeGame() { mapEl.classList.remove('show'); menuBgmOff(); if (curId && STORY.nodes[curId]) { document.body.classList.add('playing'); mapBtn.classList.add('show'); backBtn.classList.toggle('show', history.length > 0); try { vid.play(); } catch (e) {} try { vidbg.play(); } catch (e) {} } }
+  function goHome() { pauseAll(); hideHud(); mapEl.classList.remove('show'); $('splash').classList.remove('show', 'hide'); startEl.classList.remove('hide'); menuBgmOn(); }
   function startChapter1() {
-    mapEl.classList.remove('show'); userMuted = false; history = [];
+    mapEl.classList.remove('show'); menuBgmOff(); userMuted = false; history = [];
     const first = STORY.nodes[STORY.start];
     vid.setAttribute('src', first.video); vid.muted = true; vid.play().then(() => vid.pause()).catch(() => {});
     const sp = $('splash'); sp.classList.add('show');
@@ -67,6 +69,7 @@
     // record reached endings for the journey map
     if (id === 'ENDTRUE' || id === 'ENDBAD') { const p = getProg(); p[id === 'ENDTRUE' ? 'true' : 'bad'] = true; setProg(p); }
     document.body.classList.add('playing'); // enables the rotate-to-landscape gate on phones
+    menuBgmOff(); // silence menu music while a scene plays
     mapBtn.classList.add('show'); // map jump available during play
     backBtn.classList.toggle('show', history.length > 0);
     // start buffering this scene's possible next videos right away (kills the black "lag")
@@ -168,6 +171,13 @@
   $('muteBtn').onclick = () => {
     userMuted = !userMuted; $('muteBtn').textContent = userMuted ? '🔇' : '🔊'; applyMute();
   };
+
+  // start menu music on the first user interaction (autoplay is blocked before a gesture)
+  function firstGesture() {
+    if (!document.body.classList.contains('playing') && !mapEl.classList.contains('show')) menuBgmOn();
+    removeEventListener('pointerdown', firstGesture); removeEventListener('keydown', firstGesture);
+  }
+  addEventListener('pointerdown', firstGesture); addEventListener('keydown', firstGesture);
 
   // rotate gate: pause while a portrait phone is held upright, resume on landscape
   const mqPortrait = window.matchMedia('(max-width: 900px) and (orientation: portrait)');
