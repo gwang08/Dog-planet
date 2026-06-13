@@ -114,18 +114,24 @@
   #menu::before{ opacity:.10; mask-image:none; }
   #menu .hero-title{ font-family:'Bangers',cursive; font-weight:400; font-size:clamp(56px,13vw,140px); color:#fff;
     letter-spacing:5px; line-height:.8; text-shadow:0 5px 0 rgba(0,0,0,.55),0 0 55px rgba(255,205,60,.35); }
-  #menu .hero-row{ display:flex; align-items:center; justify-content:center; gap:clamp(8px,3vw,44px); flex-wrap:wrap; width:100%; max-width:1180px; margin-top:-4px; }
-  #menu .hero-sub{ font-family:'Permanent Marker',cursive; font-size:clamp(28px,6vw,62px); color:#ffd21f; flex:0 0 auto; max-width:32vw;
-    line-height:.95; transform:rotate(-5deg); text-shadow:0 3px 0 #7a5a00,0 0 26px rgba(255,210,31,.5); }
-  #menu .hero-mascot{ height:clamp(210px,44vh,400px); object-fit:contain; filter:drop-shadow(0 18px 36px rgba(0,0,0,.7)); flex:0 0 auto; }
-  #menu .intro-box{ flex:0 0 auto; width:min(86vw,320px); text-align:left; background:rgba(20,14,4,.72); backdrop-filter:blur(8px);
+  #menu .hero-row{ position:relative; width:100%; max-width:1280px; height:min(58vh,520px); margin-top:-6px; }
+  #menu .mascot-wrap{ position:absolute; left:50%; bottom:0; transform:translateX(-50%); z-index:2; }
+  #menu .hero-mascot{ height:min(60vh,540px); object-fit:contain; filter:drop-shadow(0 18px 40px rgba(0,0,0,.75)); }
+  #menu .hero-sub{ position:absolute; left:3%; top:50%; transform:translateY(-50%) rotate(-5deg); z-index:3; text-align:left;
+    font-family:'Permanent Marker',cursive; font-size:clamp(30px,5.5vw,66px); color:#ffd21f; line-height:1.05;
+    text-shadow:0 3px 0 #7a5a00,0 0 26px rgba(255,210,31,.5); }
+  #menu .bg-planet{ position:absolute; bottom:-16%; left:-6%; width:min(40vw,440px); opacity:.4; z-index:0; pointer-events:none;
+    filter:drop-shadow(0 0 60px rgba(120,180,255,.4)); }
+  #menu .intro-box{ position:absolute; right:3%; top:50%; transform:translateY(-50%); z-index:3; width:min(28vw,330px); text-align:left; background:rgba(20,14,4,.72); backdrop-filter:blur(8px);
     border:2px solid #ffd84a; border-radius:16px; padding:16px 18px; box-shadow:0 0 26px rgba(255,205,60,.22); display:flex; flex-direction:column; gap:9px; }
   #menu .intro-box h3{ font-family:'Bangers',cursive; font-weight:400; letter-spacing:2px; font-size:22px; color:#ffd84a; }
   #menu .intro-box p{ color:#e8d8a8; font-size:13.5px; line-height:1.5; }
   #menu .intro-box .btn{ width:100%; padding:13px 10px; font-size:18px; margin-top:2px; }
   #menu .intro-box .kbd{ color:#9a8a5a; font-size:10px; text-align:center; letter-spacing:1px; }
-  @media (max-width:860px){ #menu .hero-row{ flex-direction:column; gap:8px; } #menu .hero-sub{ transform:rotate(-3deg); max-width:92vw; text-align:center; order:1; }
-    #menu .hero-mascot{ height:clamp(170px,30vh,250px); order:2; } #menu .intro-box{ order:3; width:min(92vw,360px); } }
+  @media (max-width:920px){ #menu .hero-row{ position:static; height:auto; display:flex; flex-direction:column; align-items:center; gap:10px; }
+    #menu .mascot-wrap,#menu .hero-sub,#menu .intro-box{ position:static; transform:none; }
+    #menu .hero-sub{ transform:rotate(-3deg); text-align:center; } #menu .hero-mascot{ height:clamp(180px,32vh,300px); }
+    #menu .intro-box{ width:min(92vw,360px); } #menu .bg-planet{ opacity:.22; } }
   #menu .tag{ color:#d8c89a; }
   #menu .btn{ background:linear-gradient(180deg,#ffd84a,#f5a300); color:#1a1208; border:2px solid #120d02;
     border-radius:12px; clip-path:none; box-shadow:0 5px 0 #946700,0 10px 22px rgba(0,0,0,.5); }
@@ -136,8 +142,11 @@
   #menu .socials a:hover{ color:#120d02; background:#ffd84a; }
   /* menu animations */
   #menu .hero-title{ animation:popin .6s ease both, glowpulse 2.8s ease-in-out 0.6s infinite; }
-  #menu .hero-sub{ animation:popin .6s ease .15s both, sway 4.5s ease-in-out .9s infinite; }
-  #menu .hero-mascot{ animation:popin .6s ease .25s both, floaty 3.6s ease-in-out 1s infinite; }
+  #menu .hero-sub{ animation:fadein .7s ease .2s both; }
+  #menu .mascot-wrap{ animation:fadein .6s ease .25s both; }
+  #menu .hero-mascot{ animation:floaty 3.6s ease-in-out infinite; }
+  #menu .intro-box{ animation:fadein .7s ease .35s both; }
+  @keyframes fadein{ from{ opacity:0; } to{ opacity:1; } }
   #menu .heroGlow{ position:absolute; width:min(70vw,520px); height:min(70vw,520px); border-radius:50%; z-index:0; pointer-events:none;
     background:radial-gradient(circle,rgba(255,205,60,.22),transparent 65%); animation:pulseGlow 3.6s ease-in-out infinite; }
   @keyframes popin{ from{ opacity:0; transform:translateY(24px) scale(.95); } to{ opacity:1; transform:none; } }
@@ -165,10 +174,11 @@
 
 <div class="overlay" id="menu">
   <div class="heroGlow"></div>
+  <img class="bg-planet" src="assets/dogplanet.png" alt="">
   <div class="hero-title">MAME</div>
   <div class="hero-row">
-    <div class="hero-sub">THE LAST SHIBA</div>
-    <img class="hero-mascot" id="heroMascot" src="assets/mame-hero.png" alt="MAME">
+    <div class="hero-sub">THE LAST<br>SHIBA</div>
+    <div class="mascot-wrap"><img class="hero-mascot" id="heroMascot" src="assets/mame-hero.png" alt="MAME"></div>
     <div class="intro-box">
       <h3>▸ THE STORY</h3>
       <p>The Last Shiba wakes in the ashes of Dog Planet with no memory. He journeys across 5 worlds to <b>Pump Planet</b> to find his roots — surviving skill-based boss duels along the way.</p>
