@@ -37,7 +37,7 @@
 
   // fade through black, then switch scene
   function go(id, isBack) {
-    tensionOff();
+    // keep the suspense music playing THROUGH the fade; setNode() stops it when the new scene starts
     fadeEl.classList.add('show');
     setTimeout(() => { setNode(id); setTimeout(() => fadeEl.classList.remove('show'), 60); }, 420);
   }
