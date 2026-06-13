@@ -45,7 +45,7 @@ function startChapter(i){
   show('splash'); gs=ST.SPLASH; splashT=110;
 }
 function afterSplash(){ if(gs!==ST.SPLASH) return; const ch=CHAPTERS[chIdx];
-  EX.start(ch); scene='explore'; gs=ST.EXPLORE; }   // EX plays the cinematic wake-up, then the intro dialogue
+  hideAll(); EX.start(ch); scene='explore'; gs=ST.EXPLORE; }   // hide the splash overlay, then run EX
 function startBoss(){ const ch=CHAPTERS[chIdx];
   playDialogue(ch.bossIntro, ()=>{ CB.start(ch); buildSkills(); scene='boss'; gs=ST.BOSS; setHUD(true); }); }
 function onBossWin(){ const ch=CHAPTERS[chIdx]; setHUD(false); scene=null;
