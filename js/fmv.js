@@ -15,6 +15,8 @@
   const posterSrc = (id) => POSTERS[id] ? 'assets/scenes/' + POSTERS[id] + '.png' : '';
   const chapterOf = (id) => (('' + id).indexOf('C2') === 0 ? 2 : 1);
   let curChapter = 1;
+  const track = (name, params) => { try { if (window.gtag) gtag('event', name, params || {}); } catch (e) {} };
+  const isEnding = (id) => /END/.test('' + id);
 
   let node = null, curId = null, cues = [], choiceMode = false, tailStart = 0,
       userMuted = false, history = [];
@@ -68,6 +70,8 @@
   function goHome() { pauseAll(); hideHud(); mapEl.classList.remove('show'); $('splash').classList.remove('show', 'hide'); startEl.classList.remove('hide'); menuBgmOn(); }
   function startChapter(ch) {
     const cfg = CHAPTERS[ch] || CHAPTERS[1]; curChapter = ch;
+    track('chapter_start', { chapter: ch }); // GA4: which chapter played
+
     mapEl.classList.remove('show'); menuBgmOff(); userMuted = false; history = [];
     const first = STORY.nodes[cfg.start];
     vid.setAttribute('src', first.video); vid.muted = true; vid.play().then(() => vid.pause()).catch(() => {});
@@ -95,6 +99,8 @@
     if (id === 'ENDTRUE' || id === 'ENDBAD') { const p = getProg(); p[id === 'ENDTRUE' ? 'true' : 'bad'] = true; setProg(p); }
     document.body.classList.add('playing'); // enables the rotate-to-landscape gate on phones
     menuBgmOff(); // silence menu music while a scene plays
+    track('scene_view', { scene: id, chapter: curChapter }); // GA4: which scene is watched
+    if (isEnding(id)) track('ending', { scene: id, chapter: curChapter });
     mapBtn.classList.add('show'); // map jump available during play
     backBtn.classList.toggle('show', history.length > 0);
     // start buffering this scene's possible next videos right away (kills the black "lag")
@@ -123,6 +129,7 @@
 
   function navigate(next) { // forward via a choice — remember decision points for BACK
     if (next === 'MAP') { showChapters(); return; }          // special target → chapter select
+    track('choice', { from: curId, to: next });               // GA4: which branch chosen
     if (node && node.choices && node.choices.length > 1) history.push(curId);
     go(next);
   }
@@ -181,7 +188,7 @@
 
   backBtn.onclick = back;
 
-  $('startBtn').onclick = showChapters;          // NEW GAME → chapter select
+  $('startBtn').onclick = () => { track('new_game'); showChapters(); }; // NEW GAME → chapter select
   $('playNow').onclick = () => startChapter(1);  // Chapter 1 card → play
   $('playCh2').onclick = () => startChapter(2);  // Chapter 2 card → play
   $('playFromStart').onclick = () => startChapter(curChapter); // roadmap → restart current chapter
