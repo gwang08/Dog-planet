@@ -87,9 +87,17 @@
   /* smooth scene transition (fade through black) */
   #fade {
     position: fixed; inset: 0; z-index: 17; background: #000;
-    opacity: 0; pointer-events: none; transition: opacity .4s ease;
+    opacity: 0; pointer-events: none; transition: opacity .25s ease;
   }
   #fade.show { opacity: 1; }
+  /* loading spinner shown while the next clip buffers (so black never looks like a freeze) */
+  #fade::after {
+    content: ''; position: absolute; top: 50%; left: 50%; width: 42px; height: 42px;
+    margin: -21px 0 0 -21px; border: 3px solid rgba(255,255,255,.2); border-top-color: #ff3b6b;
+    border-radius: 50%; opacity: 0; transition: opacity .2s; animation: spin 0.8s linear infinite;
+  }
+  #fade.show.busy::after { opacity: 1; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ===== landing page (start menu) — restored MAME hero layout ===== */
   #start {

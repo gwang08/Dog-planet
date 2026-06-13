@@ -18,6 +18,10 @@
   function tensionOn() { if (!tension) return; tension.volume = 0.4; tension.muted = userMuted; tension.currentTime = 0; tension.play().catch(() => {}); }
   function tensionOff() { if (tension) { tension.pause(); } }
 
+  // preload upcoming videos so picking a choice switches instantly (no black "lag")
+  const preloadCache = {};
+  function preload(src) { if (!src || preloadCache[src]) return; const v = document.createElement('video'); v.preload = 'auto'; v.muted = true; v.src = src; preloadCache[src] = v; }
+
   function setNode(id) {
     node = STORY.nodes[id]; curId = id;
     if (!node) return;
@@ -33,13 +37,27 @@
     if (vidbg && vidbg.getAttribute('src') !== node.video) vidbg.setAttribute('src', node.video);
     if (vidbg) { vidbg.muted = true; try { vidbg.currentTime = 0; } catch (e) {} vidbg.play().catch(() => {}); }
     backBtn.classList.toggle('show', history.length > 0);
+    // start buffering this scene's possible next videos right away (kills the black "lag")
+    (node.choices || []).forEach((c) => { const n = STORY.nodes[c.next]; if (n) preload(n.video); });
   }
 
   // fade through black, then switch scene
   function go(id, isBack) {
     // keep the suspense music playing THROUGH the fade; setNode() stops it when the new scene starts
     fadeEl.classList.add('show');
-    setTimeout(() => { setNode(id); setTimeout(() => fadeEl.classList.remove('show'), 60); }, 420);
+    setTimeout(() => {
+      setNode(id);
+      // reveal only once the new video actually has a frame → no black flash / fake "lag"
+      let done = false;
+      const reveal = () => { if (done) return; done = true; fadeEl.classList.remove('show', 'busy');
+        vid.removeEventListener('loadeddata', reveal); vid.removeEventListener('playing', reveal); };
+      if (vid.readyState >= 2) reveal();
+      else {
+        vid.addEventListener('loadeddata', reveal); vid.addEventListener('playing', reveal);
+        setTimeout(() => { if (!done) fadeEl.classList.add('busy'); }, 350); // spinner if still buffering
+        setTimeout(reveal, 4000); // hard fallback so it never sticks
+      }
+    }, 240);
   }
 
   function navigate(next) { // forward via a choice — remember decision points for BACK
@@ -69,6 +87,7 @@
     choicesEl.classList.add('show');
     loopTail();
     tensionOn(); // suspense music while waiting for the player's choice
+    list.forEach((c) => { const n = STORY.nodes[c.next]; if (n) preload(n.video); }); // buffer next clips now
   }
 
   vid.addEventListener('timeupdate', () => {
