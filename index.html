@@ -110,17 +110,22 @@
   .socials a:hover{ color:#04060f; background:var(--neon); transform:translateY(-3px); box-shadow:0 0 22px rgba(61,245,255,.7); }
   .socials svg{ width:22px; height:22px; fill:currentColor; }
   /* ===== MAME hero menu (official-site look) ===== */
-  #menu{ background:radial-gradient(circle at 50% 32%, #4a3a0c 0%, #1a1407 45%, #0b0904 100%); gap:4px; }
+  #menu{ background:radial-gradient(circle at 50% 32%, #4a3a0c 0%, #1a1407 45%, #0b0904 100%); gap:10px; overflow:hidden; }
   #menu::before{ opacity:.10; mask-image:none; }
-  #menu .hero{ display:flex; align-items:center; justify-content:center; gap:clamp(4px,2vw,30px); flex-wrap:wrap; width:100%; max-width:1080px; }
-  #menu .hero-left{ text-align:left; display:flex; flex-direction:column; align-items:flex-start; }
-  #menu .hero-title{ font-family:'Bangers',cursive; font-weight:400; font-size:clamp(64px,15vw,160px); color:#fff;
+  #menu .hero-title{ font-family:'Bangers',cursive; font-weight:400; font-size:clamp(56px,13vw,140px); color:#fff;
     letter-spacing:5px; line-height:.8; text-shadow:0 5px 0 rgba(0,0,0,.55),0 0 55px rgba(255,205,60,.35); }
-  #menu .hero-sub{ font-family:'Permanent Marker',cursive; font-size:clamp(30px,7.5vw,70px); color:#ffd21f;
-    line-height:.95; transform:rotate(-4deg); margin:4px 0 0 6px; text-shadow:0 3px 0 #7a5a00,0 0 26px rgba(255,210,31,.5); }
-  #menu .hero-mascot{ height:clamp(230px,48vh,470px); object-fit:contain; filter:drop-shadow(0 18px 36px rgba(0,0,0,.7)); }
-  @media (max-width:760px){ #menu .hero{ flex-direction:column; gap:2px; } #menu .hero-left{ align-items:center; text-align:center; }
-    #menu .hero-sub{ transform:rotate(-3deg); margin-left:0; } #menu .hero-mascot{ height:clamp(190px,34vh,300px); } }
+  #menu .hero-row{ display:flex; align-items:center; justify-content:center; gap:clamp(8px,3vw,44px); flex-wrap:wrap; width:100%; max-width:1180px; margin-top:-4px; }
+  #menu .hero-sub{ font-family:'Permanent Marker',cursive; font-size:clamp(28px,6vw,62px); color:#ffd21f; flex:0 0 auto; max-width:32vw;
+    line-height:.95; transform:rotate(-5deg); text-shadow:0 3px 0 #7a5a00,0 0 26px rgba(255,210,31,.5); }
+  #menu .hero-mascot{ height:clamp(210px,44vh,400px); object-fit:contain; filter:drop-shadow(0 18px 36px rgba(0,0,0,.7)); flex:0 0 auto; }
+  #menu .intro-box{ flex:0 0 auto; width:min(86vw,320px); text-align:left; background:rgba(20,14,4,.72); backdrop-filter:blur(8px);
+    border:2px solid #ffd84a; border-radius:16px; padding:16px 18px; box-shadow:0 0 26px rgba(255,205,60,.22); display:flex; flex-direction:column; gap:9px; }
+  #menu .intro-box h3{ font-family:'Bangers',cursive; font-weight:400; letter-spacing:2px; font-size:22px; color:#ffd84a; }
+  #menu .intro-box p{ color:#e8d8a8; font-size:13.5px; line-height:1.5; }
+  #menu .intro-box .btn{ width:100%; padding:13px 10px; font-size:18px; margin-top:2px; }
+  #menu .intro-box .kbd{ color:#9a8a5a; font-size:10px; text-align:center; letter-spacing:1px; }
+  @media (max-width:860px){ #menu .hero-row{ flex-direction:column; gap:8px; } #menu .hero-sub{ transform:rotate(-3deg); max-width:92vw; text-align:center; order:1; }
+    #menu .hero-mascot{ height:clamp(170px,30vh,250px); order:2; } #menu .intro-box{ order:3; width:min(92vw,360px); } }
   #menu .tag{ color:#d8c89a; }
   #menu .btn{ background:linear-gradient(180deg,#ffd84a,#f5a300); color:#1a1208; border:2px solid #120d02;
     border-radius:12px; clip-path:none; box-shadow:0 5px 0 #946700,0 10px 22px rgba(0,0,0,.5); }
@@ -160,19 +165,18 @@
 
 <div class="overlay" id="menu">
   <div class="heroGlow"></div>
-  <div class="hero">
-    <div class="hero-left">
-      <div class="hero-title">MAME</div>
-      <div class="hero-sub">THE LAST SHIBA</div>
-    </div>
+  <div class="hero-title">MAME</div>
+  <div class="hero-row">
+    <div class="hero-sub">THE LAST SHIBA</div>
     <img class="hero-mascot" id="heroMascot" src="assets/mame-hero.png" alt="MAME">
+    <div class="intro-box">
+      <h3>▸ THE STORY</h3>
+      <p>The Last Shiba wakes in the ashes of Dog Planet with no memory. He journeys across 5 worlds to <b>Pump Planet</b> to find his roots — surviving skill-based boss duels along the way.</p>
+      <button class="btn" id="playBtn">▸ NEW GAME</button>
+      <button class="btn alt" id="contBtn" style="display:none">▸ CONTINUE</button>
+      <div class="kbd">WASD / DRAG · SPACE = DODGE · 1–4 = SKILLS</div>
+    </div>
   </div>
-  <p class="tag">ORIGINS — his journey to find his roots on Pump Planet. Explore 5 worlds, uncover the truth, survive skill-based boss duels.</p>
-  <div class="mbtns" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-    <button class="btn" id="playBtn">▸ NEW GAME</button>
-    <button class="btn alt" id="contBtn" style="display:none">▸ CONTINUE</button>
-  </div>
-  <div class="kbd">WASD / DRAG · SPACE = DODGE · 1–4 = SKILLS</div>
   <div class="socials">
     <a href="https://x.com/mamebnb" target="_blank" rel="noopener" aria-label="X">
       <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>
