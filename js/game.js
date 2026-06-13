@@ -105,8 +105,9 @@ cv.addEventListener('touchend', ()=>{ if(gs===ST.EXPLORE && EX.cap) EX.advanceCa
 $('vn').addEventListener('click', e=>{ if(e.target.id==='vnSkip') return; advanceDialogue(); });
 $('vnSkip').onclick=()=>{ while(dlg) advanceDialogue(); };
 $('dodgeBtn').onclick=()=>{ if(gs===ST.BOSS) CB.dodge(); };
-$('playBtn').onclick=()=>{ saved=0; localStorage.setItem('dp_chapter',0); startGame(0); };
-$('contBtn').onclick=()=>startGame(Math.min(saved,CHAPTERS.length-1));
+function playBgm(){ const a=$('bgm'); if(a){ a.volume=0.45; a.muted=muted; a.play().catch(()=>{}); } }
+$('playBtn').onclick=()=>{ saved=0; localStorage.setItem('dp_chapter',0); playBgm(); startGame(0); };
+$('contBtn').onclick=()=>{ playBgm(); startGame(Math.min(saved,CHAPTERS.length-1)); };
 $('splashNext').onclick=()=>afterSplash();
 $('splash').addEventListener('click', e=>{ if(e.target.id!=='splashNext') afterSplash(); });
 $('vicNext').onclick=()=>startChapter(chIdx+1);
@@ -114,7 +115,7 @@ $('winAgain').onclick=()=>startGame(0);
 $('overRetry').onclick=()=>{ const ch=CHAPTERS[chIdx]; CB.start(ch); buildSkills(); scene='boss'; gs=ST.BOSS; setHUD(true); hideAll(); };
 $('overHome').onclick=$('winHome').onclick=()=>goMenu();
 $('homeBtn').onclick=()=>goMenu();
-$('muteBtn').onclick=()=>{ muted=!muted; $('muteBtn').textContent=muted?'🔇':'🔊'; };
+$('muteBtn').onclick=()=>{ muted=!muted; $('muteBtn').textContent=muted?'🔇':'🔊'; const a=$('bgm'); if(a){ a.muted=muted; if(!muted) a.play().catch(()=>{}); } };
 function goMenu(){ setHUD(false); scene=null; hideAll(); show('menu'); gs=ST.MENU;
   $('homeBtn').style.display='none'; $('muteBtn').style.display='none'; }
 

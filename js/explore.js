@@ -12,9 +12,9 @@ const EX = {
     this.npcs=beats.map((ls,i)=>({ x:620+i*640, spr:sprites[i%sprites.length], name:names[i%names.length], lines:ls, done:false }));
     this.exitX=(this.npcs.length?this.npcs[this.npcs.length-1].x:300)+560;
     this.len=this.exitX+160;
-    cam.x=this.x; cam.y=0;
-    // opening: fade in from black, then the intro plays as subtitles
-    this.say(ch.intro, ()=>{ this.busy=false; });
+    cam.x=this.x; cam.y=0; this.introDone=false;
+    // opening: fade in from black, then the intro plays as subtitles (NPCs hidden until it ends)
+    this.say(ch.intro, ()=>{ this.busy=false; this.introDone=true; });
   },
 
   ground(){ return VH*0.76; },
@@ -56,10 +56,20 @@ const EX = {
       ctx.save(); ctx.globalAlpha=0.6+0.4*p; ctx.shadowColor='#ff3b6b'; ctx.shadowBlur=30; ctx.strokeStyle='#ff3b6b'; ctx.lineWidth=6;
       ctx.beginPath(); ctx.ellipse(X,G-90,46,120,0,0,TAU); ctx.stroke(); ctx.restore();
       ctx.fillStyle='#ff8aa8'; ctx.font='bold 22px Trebuchet MS'; ctx.textAlign='center'; ctx.fillText('ARENA ▸',X,G-220); }
-    // NPCs
-    for(const n of this.npcs) this.drawChar(n,G);
+    // NPCs (hidden during the opening intro)
+    if(this.introDone) for(const n of this.npcs) this.drawChar(n,G);
     // MAME
     this.drawSprite('mame', this.x, G, this.face, this.walk>0, true);
+    // walk hint (when free to move and not in dialogue)
+    if(this.introDone && !this.cap){
+      const all=this.npcs.every(c=>c.done), msg=all?'Walk right  ▶  to the ARENA':'◀ A / D ▶   walk and meet the locals';
+      ctx.textAlign='center'; ctx.font='bold 16px Trebuchet MS'; const p=0.6+0.4*Math.sin(frame*0.08);
+      ctx.fillStyle='rgba(0,0,0,.45)'; ctx.fillRect(VW/2-180,VH*0.12-18,360,30);
+      ctx.fillStyle='rgba(255,255,255,'+p+')'; ctx.fillText(msg, VW/2, VH*0.12);
+      // bouncing arrow near MAME pointing right
+      const ax=sx(this.x)+90+Math.sin(frame*0.18)*6, ay=G-this.spriteH()*0.5;
+      ctx.fillStyle='#ffd45e'; ctx.font='bold 34px Trebuchet MS'; ctx.fillText('▶',ax,ay);
+    }
     // film subtitle bar
     if(this.cap) this.drawCaption();
     // fade-in
