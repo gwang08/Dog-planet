@@ -10,8 +10,11 @@
         tension = $('tension'), menubgm = $('menubgm'), mapEl = $('map'), mapBtn = $('mapBtn'), poster = $('poster');
 
   // each scene's opening keyframe — shown as a poster while the clip buffers (matches the video's first frame)
-  const POSTERS = { V1: 'v1-a', V2A: 'v2a', V2B: 'v2b', V3: 'v3a', V4: 'v4a', V5A: 'v5a-a', V5B: 'v5b', ENDTRUE: 'endtrue-a', ENDBAD: 'endbad' };
+  const POSTERS = { V1: 'v1-a', V2A: 'v2a', V2B: 'v2b', V3: 'v3a', V4: 'v4a', V5A: 'v5a-a', V5B: 'v5b', ENDTRUE: 'endtrue-a', ENDBAD: 'endbad',
+    C2V1: 'c2-v1', C2V2A: 'c2-v2a', C2V2B: 'c2-v2b', C2V3: 'c2-v3', C2V4: 'c2-v4', C2V5A: 'c2-v5a', C2V5B: 'c2-v5b', C2ENDTRUE: 'c2-endtrue', C2ENDBAD: 'c2-endbad' };
   const posterSrc = (id) => POSTERS[id] ? 'assets/scenes/' + POSTERS[id] + '.png' : '';
+  const chapterOf = (id) => (('' + id).indexOf('C2') === 0 ? 2 : 1);
+  let curChapter = 1;
 
   let node = null, curId = null, cues = [], choiceMode = false, tailStart = 0,
       userMuted = false, history = [];
@@ -33,9 +36,20 @@
   function setProg(p) { try { localStorage.setItem('mame_ch1', JSON.stringify(p)); } catch (e) {} }
   function renderMap() {
     const p = getProg();
-    $('endTrue').classList.toggle('done', !!p.true);
-    $('endBad').classList.toggle('done', !!p.bad);
-    $('mapCount').textContent = 'Endings found: ' + ((p.true ? 1 : 0) + (p.bad ? 1 : 0)) + ' / 2';
+    const c = $('mapCount'); if (c) c.textContent = 'Endings found: ' + ((p.true ? 1 : 0) + (p.bad ? 1 : 0)) + ' / 2';
+  }
+  // build the in-game roadmap (jump buttons) for the current chapter
+  function renderRoadmap() {
+    const ch = CHAPTERS[curChapter]; if (!ch) return;
+    const t = $('roadmapTitle'); if (t) t.textContent = ch.title + ' · ROADMAP';
+    const box = $('treeNodes'); if (!box) return; box.innerHTML = '';
+    ch.roadmap.forEach((r) => {
+      const btn = document.createElement('button');
+      btn.className = (r[0].indexOf('Ending') >= 0) ? 'tend' : 'tnode';
+      btn.textContent = r[0];
+      btn.onclick = () => jump(r[1]);
+      box.appendChild(btn);
+    });
   }
   function pauseAll() { try { vid.pause(); } catch (e) {} try { vidbg.pause(); } catch (e) {} tensionOff(); }
   function hideHud() { document.body.classList.remove('playing'); mapBtn.classList.remove('show'); backBtn.classList.remove('show');
@@ -44,20 +58,22 @@
   // chapter select (3 chapters only — no roadmap): shown by NEW GAME and end-of-chapter
   function showChapters() { pauseAll(); hideHud(); startEl.classList.add('hide'); $('splash').classList.remove('show', 'hide'); renderMap(); setView(false); mapEl.classList.add('show'); menuBgmOn(); }
   // roadmap (branch tree to jump scenes): shown only IN-GAME via the map button
-  function showRoadmap() { pauseAll(); hideHud(); menuBgmOff(); renderMap(); setView(true); mapEl.classList.add('show'); }
+  function showRoadmap() { pauseAll(); hideHud(); menuBgmOff(); renderRoadmap(); setView(true); mapEl.classList.add('show'); }
   function resumeGame() { mapEl.classList.remove('show'); menuBgmOff(); if (curId && STORY.nodes[curId]) { document.body.classList.add('playing'); mapBtn.classList.add('show'); backBtn.classList.toggle('show', history.length > 0); try { vid.play(); } catch (e) {} try { vidbg.play(); } catch (e) {} } }
   function goHome() { pauseAll(); hideHud(); mapEl.classList.remove('show'); $('splash').classList.remove('show', 'hide'); startEl.classList.remove('hide'); menuBgmOn(); }
-  function startChapter1() {
+  function startChapter(ch) {
+    const cfg = CHAPTERS[ch] || CHAPTERS[1]; curChapter = ch;
     mapEl.classList.remove('show'); menuBgmOff(); userMuted = false; history = [];
-    const first = STORY.nodes[STORY.start];
+    const first = STORY.nodes[cfg.start];
     vid.setAttribute('src', first.video); vid.muted = true; vid.play().then(() => vid.pause()).catch(() => {});
-    const sp = $('splash'); sp.classList.add('show');
-    setTimeout(() => { sp.classList.add('hide'); setTimeout(() => { sp.classList.remove('show', 'hide'); go(STORY.start); }, 700); }, 3500);
+    const sp = $('splash'); sp.querySelector('.sp-ch').textContent = cfg.title; sp.querySelector('.sp-sub').textContent = cfg.sub;
+    sp.classList.add('show');
+    setTimeout(() => { sp.classList.add('hide'); setTimeout(() => { sp.classList.remove('show', 'hide'); go(cfg.start); }, 700); }, 3500);
   }
   function jump(id) { if (!STORY.nodes[id]) return; mapEl.classList.remove('show'); history = []; go(id); } // jump to any scene from the map
 
   function setNode(id) {
-    node = STORY.nodes[id]; curId = id;
+    node = STORY.nodes[id]; curId = id; curChapter = chapterOf(id);
     if (!node) return;
     choiceMode = false; tensionOff(); applyMute();
     choicesEl.classList.remove('show'); choicesEl.innerHTML = '';
@@ -160,14 +176,13 @@
 
   backBtn.onclick = back;
 
-  $('startBtn').onclick = showChapters;       // NEW GAME → chapter select (3 chapters)
-  $('playNow').onclick = startChapter1;       // Chapter 1 card "PLAY NOW" → play from start
-  $('playCh1').onclick = startChapter1;       // roadmap "PLAY FROM START" → play from start
-  $('mapHome').onclick = goHome;              // chapter select → landing
-  $('treeBack').onclick = resumeGame;         // roadmap "BACK" → resume the current scene
-  mapBtn.onclick = showRoadmap;               // in-game map button → roadmap (jump scenes)
-  // clickable scene nodes on the roadmap → jump to that scene and keep playing
-  mapEl.querySelectorAll('[data-go]').forEach((el) => { el.onclick = () => jump(el.getAttribute('data-go')); });
+  $('startBtn').onclick = showChapters;          // NEW GAME → chapter select
+  $('playNow').onclick = () => startChapter(1);  // Chapter 1 card → play
+  $('playCh2').onclick = () => startChapter(2);  // Chapter 2 card → play
+  $('playFromStart').onclick = () => startChapter(curChapter); // roadmap → restart current chapter
+  $('mapHome').onclick = goHome;                 // chapter select → landing
+  $('treeBack').onclick = resumeGame;            // roadmap "BACK" → resume the current scene
+  mapBtn.onclick = showRoadmap;                  // in-game map button → roadmap (jump scenes)
   $('muteBtn').onclick = () => {
     userMuted = !userMuted; $('muteBtn').textContent = userMuted ? '🔇' : '🔊'; applyMute();
   };

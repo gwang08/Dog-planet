@@ -320,10 +320,10 @@
           <div class="map-count" id="mapCount">Endings found: 0 / 2</div>
           <button class="btn" id="playNow">▶ PLAY NOW</button>
         </div>
-        <div class="chap locked">
+        <div class="chap unlocked">
           <div class="chap-num">CHAPTER 2</div>
           <div class="chap-name">Dark Side of the Moon</div>
-          <div class="lock">🔒 COMING SOON</div>
+          <button class="btn" id="playCh2">▶ PLAY NOW</button>
         </div>
         <div class="chap locked">
           <div class="chap-num">CHAPTER 3</div>
@@ -336,21 +336,9 @@
     <!-- LEVEL 2: chapter roadmap (branch tree — jump to any scene) -->
     <div class="map-view" id="viewTree" style="display:none">
       <button class="map-back" id="treeBack">◀ BACK</button>
-      <h2 class="map-title">CHAPTER 1 · ROADMAP</h2>
-      <div class="tree">
-        <button class="tnode" data-go="V1">▸ Wake Up</button>
-        <div class="branchwrap"><div class="tbranch">
-          <button class="tnode" data-go="V2A">Charge</button>
-          <button class="tnode" data-go="V2B">Scout</button>
-        </div></div>
-        <button class="tnode" data-go="V3">Moo Deng</button>
-        <button class="tnode" data-go="V4">Penguin</button>
-        <div class="tends">
-          <button class="tend" id="endTrue" data-go="V5A">🏆 True Ending</button>
-          <button class="tend" id="endBad" data-go="V5B">💀 Bad Ending</button>
-        </div>
-      </div>
-      <button class="btn" id="playCh1">▸ PLAY FROM START</button>
+      <h2 class="map-title" id="roadmapTitle">ROADMAP</h2>
+      <div class="tree" id="treeNodes"></div>
+      <button class="btn" id="playFromStart">▸ PLAY FROM START</button>
     </div>
   </div>
 
