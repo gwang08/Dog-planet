@@ -32,14 +32,14 @@
     $('mapCount').textContent = 'Endings found: ' + ((p.true ? 1 : 0) + (p.bad ? 1 : 0)) + ' / 2';
   }
   function pauseAll() { try { vid.pause(); } catch (e) {} try { vidbg.pause(); } catch (e) {} tensionOff(); }
-  function hideHud() { mapBtn.classList.remove('show'); backBtn.classList.remove('show');
+  function hideHud() { document.body.classList.remove('playing'); mapBtn.classList.remove('show'); backBtn.classList.remove('show');
     choicesEl.classList.remove('show'); subEl.classList.remove('show'); fadeEl.classList.remove('show', 'busy'); freeze.classList.remove('show'); }
   function setView(tree) { $('viewChapters').style.display = tree ? 'none' : 'flex'; $('viewTree').style.display = tree ? 'flex' : 'none'; }
   // chapter select (3 chapters only — no roadmap): shown by NEW GAME and end-of-chapter
   function showChapters() { pauseAll(); hideHud(); startEl.classList.add('hide'); $('splash').classList.remove('show', 'hide'); renderMap(); setView(false); mapEl.classList.add('show'); }
   // roadmap (branch tree to jump scenes): shown only IN-GAME via the map button
   function showRoadmap() { pauseAll(); hideHud(); renderMap(); setView(true); mapEl.classList.add('show'); }
-  function resumeGame() { mapEl.classList.remove('show'); if (curId && STORY.nodes[curId]) { mapBtn.classList.add('show'); backBtn.classList.toggle('show', history.length > 0); try { vid.play(); } catch (e) {} try { vidbg.play(); } catch (e) {} } }
+  function resumeGame() { mapEl.classList.remove('show'); if (curId && STORY.nodes[curId]) { document.body.classList.add('playing'); mapBtn.classList.add('show'); backBtn.classList.toggle('show', history.length > 0); try { vid.play(); } catch (e) {} try { vidbg.play(); } catch (e) {} } }
   function goHome() { pauseAll(); hideHud(); mapEl.classList.remove('show'); $('splash').classList.remove('show', 'hide'); startEl.classList.remove('hide'); }
   function startChapter1() {
     mapEl.classList.remove('show'); userMuted = false; history = [];
@@ -66,6 +66,7 @@
     if (vidbg) { vidbg.muted = true; try { vidbg.currentTime = 0; } catch (e) {} vidbg.play().catch(() => {}); }
     // record reached endings for the journey map
     if (id === 'ENDTRUE' || id === 'ENDBAD') { const p = getProg(); p[id === 'ENDTRUE' ? 'true' : 'bad'] = true; setProg(p); }
+    document.body.classList.add('playing'); // enables the rotate-to-landscape gate on phones
     mapBtn.classList.add('show'); // map jump available during play
     backBtn.classList.toggle('show', history.length > 0);
     // start buffering this scene's possible next videos right away (kills the black "lag")
@@ -167,6 +168,16 @@
   $('muteBtn').onclick = () => {
     userMuted = !userMuted; $('muteBtn').textContent = userMuted ? '🔇' : '🔊'; applyMute();
   };
+
+  // rotate gate: pause while a portrait phone is held upright, resume on landscape
+  const mqPortrait = window.matchMedia('(max-width: 900px) and (orientation: portrait)');
+  function onOrient() {
+    if (!document.body.classList.contains('playing')) return;
+    if (mqPortrait.matches) { try { vid.pause(); } catch (e) {} tensionOff(); }
+    else { try { vid.play(); } catch (e) {} if (choiceMode) tensionOn(); }
+  }
+  if (mqPortrait.addEventListener) mqPortrait.addEventListener('change', onOrient); else if (mqPortrait.addListener) mqPortrait.addListener(onOrient);
+  addEventListener('resize', onOrient);
 
   window.__fmv = { go, navigate, back, get node() { return node; }, get curId() { return curId; },
     get choiceMode() { return choiceMode; }, get history() { return history.slice(); }, get muted() { return vid.muted; } };

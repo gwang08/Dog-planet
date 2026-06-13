@@ -214,6 +214,16 @@
     .choice { padding: 13px 16px; }
   }
 
+  /* force-landscape gate (A): while PLAYING on a portrait phone, ask the user to rotate */
+  #rotate { position: fixed; inset: 0; z-index: 50; display: none; flex-direction: column; align-items: center;
+    justify-content: center; gap: 16px; text-align: center; padding: 26px;
+    background: radial-gradient(circle at 50% 40%, #160e2c, #05060f 82%); color: #fff; }
+  #rotate .ph { font-size: 70px; animation: rothint 1.8s ease-in-out infinite; transform-origin: 50% 50%; }
+  #rotate h3 { font-family: 'Bangers', cursive; font-size: clamp(28px,8vw,40px); letter-spacing: 2px; color: #ffd45e; }
+  #rotate p { color: #9fb0cf; max-width: 320px; font-size: 14px; line-height: 1.5; }
+  @keyframes rothint { 0%,100% { transform: rotate(-90deg); } 45%,55% { transform: rotate(0deg); } }
+  @media (max-width: 900px) and (orientation: portrait) { body.playing #rotate { display: flex; } }
+
   /* chapter splash card (between NEW GAME and the video) */
   #splash {
     position: fixed; inset: 0; z-index: 18; display: flex; flex-direction: column;
@@ -329,6 +339,12 @@
       </div>
       <button class="btn" id="playCh1">▸ PLAY FROM START</button>
     </div>
+  </div>
+
+  <div id="rotate">
+    <div class="ph">📱</div>
+    <h3>ROTATE YOUR DEVICE</h3>
+    <p>This is a cinematic film — turn your phone sideways to watch &amp; play.<br>(Make sure rotation lock is off.)</p>
   </div>
 
   <script>
