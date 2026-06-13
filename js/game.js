@@ -45,7 +45,7 @@ function startChapter(i){
   show('splash'); gs=ST.SPLASH; splashT=110;
 }
 function afterSplash(){ const ch=CHAPTERS[chIdx];
-  playDialogue(ch.intro, ()=>{ EX.start(ch); scene='explore'; gs=ST.EXPLORE; }); }
+  EX.start(ch); scene='explore'; gs=ST.EXPLORE; }   // EX plays the cinematic wake-up, then the intro dialogue
 function startBoss(){ const ch=CHAPTERS[chIdx];
   playDialogue(ch.bossIntro, ()=>{ CB.start(ch); buildSkills(); scene='boss'; gs=ST.BOSS; setHUD(true); }); }
 function onBossWin(){ const ch=CHAPTERS[chIdx]; setHUD(false); scene=null;
@@ -95,9 +95,12 @@ function loop(ts){
 // ---- input wiring ----
 addEventListener('keydown', e=>{ const k=e.key.toLowerCase();
   if(dlg){ if(k===' '||k==='enter'||k==='arrowright'){ e.preventDefault(); advanceDialogue(); } return; }
+  if(gs===ST.EXPLORE && EX.cap){ if(k===' '||k==='enter'||k==='arrowright'){ e.preventDefault(); EX.advanceCap(); } return; }
   if(gs===ST.BOSS){ if(k===' '){ e.preventDefault(); CB.dodge(); }
     else if(k>='1'&&k<='4') CB.useSkill(+k-1); }
 });
+cv.addEventListener('click', ()=>{ if(gs===ST.EXPLORE && EX.cap) EX.advanceCap(); });
+cv.addEventListener('touchend', ()=>{ if(gs===ST.EXPLORE && EX.cap) EX.advanceCap(); });
 $('vn').addEventListener('click', e=>{ if(e.target.id==='vnSkip') return; advanceDialogue(); });
 $('vnSkip').onclick=()=>{ while(dlg) advanceDialogue(); };
 $('dodgeBtn').onclick=()=>{ if(gs===ST.BOSS) CB.dodge(); };

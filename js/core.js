@@ -25,7 +25,8 @@ let DT = 1, lastTs = 0, frame = 0;
 // ---- images ----
 const imgs = {};
 function loadImg(key, src){ const i=new Image(); i.src=src; imgs[key]=i; }
-['mame','moodeng','boss-fartcoin','boss-gigachad','boss-whale','boss-pepe','boss-penguin']
+['mame','moodeng','boss-fartcoin','boss-gigachad','boss-whale','boss-pepe','boss-penguin',
+ 'bg-city','npc-bear','npc-wolf','ship-pump']
   .forEach(k=>loadImg(k,'assets/'+k+'.png'));
 function drawImgC(key,X,Y,size,flip){
   const i=imgs[key]; if(!i||!i.complete||!i.width){ return false; }
