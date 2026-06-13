@@ -153,8 +153,9 @@
      (50vh - 28.125vw) from screen bottom. */
   @media (max-aspect-ratio: 1/1) {
     #vid { object-fit: contain; }
-    #sub { bottom: calc(50vh - 28.125vw + 14px); max-width: 94%; padding: 8px 16px;
-           font-size: clamp(15px, 4.2vw, 22px); }
+    /* video is letterboxed (blurred fill); put subtitle BELOW the video in the lower area
+       so it never covers the picture */
+    #sub { bottom: 7%; max-width: 94%; padding: 8px 16px; font-size: clamp(15px, 4.2vw, 22px); }
     #choices { justify-content: flex-end; padding: 0 14px 7%; gap: 12px; }
     .choice { padding: 13px 16px; }
   }
