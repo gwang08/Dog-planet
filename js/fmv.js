@@ -7,7 +7,11 @@
   const $ = (id) => document.getElementById(id);
   const vid = $('vid'), vidbg = $('vidbg'), freeze = $('freeze'), subEl = $('sub'), choicesEl = $('choices'),
         noteEl = $('note'), startEl = $('start'), fadeEl = $('fade'), backBtn = $('backBtn'),
-        tension = $('tension'), menubgm = $('menubgm'), mapEl = $('map'), mapBtn = $('mapBtn');
+        tension = $('tension'), menubgm = $('menubgm'), mapEl = $('map'), mapBtn = $('mapBtn'), poster = $('poster');
+
+  // each scene's opening keyframe — shown as a poster while the clip buffers (matches the video's first frame)
+  const POSTERS = { V1: 'v1-a', V2A: 'v2a', V2B: 'v2b', V3: 'v3a', V4: 'v4a', V5A: 'v5a-a', V5B: 'v5b', ENDTRUE: 'endtrue-a', ENDBAD: 'endbad' };
+  const posterSrc = (id) => POSTERS[id] ? 'assets/scenes/' + POSTERS[id] + '.png' : '';
 
   let node = null, curId = null, cues = [], choiceMode = false, tailStart = 0,
       userMuted = false, history = [];
@@ -48,7 +52,7 @@
     const first = STORY.nodes[STORY.start];
     vid.setAttribute('src', first.video); vid.muted = true; vid.play().then(() => vid.pause()).catch(() => {});
     const sp = $('splash'); sp.classList.add('show');
-    setTimeout(() => { sp.classList.add('hide'); setTimeout(() => { sp.classList.remove('show', 'hide'); setNode(STORY.start); }, 700); }, 3500);
+    setTimeout(() => { sp.classList.add('hide'); setTimeout(() => { sp.classList.remove('show', 'hide'); go(STORY.start); }, 700); }, 3500);
   }
   function jump(id) { if (!STORY.nodes[id]) return; mapEl.classList.remove('show'); history = []; go(id); } // jump to any scene from the map
 
@@ -81,26 +85,22 @@
   }
 
   // fade through black, then switch scene
-  function go(id, isBack) {
-    // smoothest transition: freeze the current frame, switch the video underneath, then
-    // cross-dissolve from the frozen frame to the new scene — no black gap at all.
-    try {
-      if (vid.videoWidth) {
-        freeze.width = vid.videoWidth; freeze.height = vid.videoHeight;
-        freeze.getContext('2d').drawImage(vid, 0, 0);
-        freeze.classList.add('show');
-      }
-    } catch (e) {}
-    setNode(id); // suspense music keeps playing; setNode() stops it as the new scene starts
+  function go(id) {
+    // smooth transition: show the NEW scene's keyframe as a poster (≈ the video's first frame),
+    // load the clip underneath, then cross-dissolve poster → video. Never a black gap.
+    const ps = posterSrc(id);
+    if (poster && ps) { poster.src = ps; poster.classList.add('show'); }
+    else { try { if (vid.videoWidth) { freeze.width = vid.videoWidth; freeze.height = vid.videoHeight; freeze.getContext('2d').drawImage(vid, 0, 0); freeze.classList.add('show'); } } catch (e) {} }
+    setNode(id);
     let done = false;
     const reveal = () => { if (done) return; done = true;
-      freeze.classList.remove('show'); fadeEl.classList.remove('show', 'busy');
+      poster.classList.remove('show', 'busy'); freeze.classList.remove('show');
       vid.removeEventListener('loadeddata', reveal); vid.removeEventListener('playing', reveal); };
     if (vid.readyState >= 2) setTimeout(reveal, 40);
     else {
       vid.addEventListener('loadeddata', reveal); vid.addEventListener('playing', reveal);
-      setTimeout(() => { if (!done) fadeEl.classList.add('show', 'busy'); }, 600); // spinner only if really slow
-      setTimeout(reveal, 4000);
+      setTimeout(() => { if (!done) poster.classList.add('busy'); }, 500);  // spinner over the poster if slow
+      setTimeout(reveal, 10000); // hard fallback (poster shows meanwhile, never black)
     }
   }
 

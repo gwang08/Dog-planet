@@ -22,6 +22,13 @@
   #freeze { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2;
     opacity: 0; pointer-events: none; transition: opacity .45s ease; }
   #freeze.show { opacity: 1; transition: none; }
+  /* poster: scene keyframe shown while the next clip buffers (no black on slow networks) */
+  #poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 3;
+    background: #05060f; opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+  #poster.show { opacity: 1; transition: none; }
+  #poster.busy::after { content: ''; position: absolute; top: 50%; left: 50%; width: 42px; height: 42px;
+    margin: -21px 0 0 -21px; border: 3px solid rgba(255,255,255,.22); border-top-color: #ff3b6b;
+    border-radius: 50%; animation: spin .8s linear infinite; }
 
   /* subtitle bar (typed, synced to audio) — cinematic film style */
   #sub {
@@ -207,6 +214,7 @@
   @media (max-aspect-ratio: 1/1) {
     #vid { object-fit: contain; }
     #freeze { object-fit: contain; }
+    #poster { object-fit: contain; }
     /* video is letterboxed (blurred fill); put subtitle BELOW the video in the lower area
        so it never covers the picture */
     #sub { bottom: 7%; max-width: 94%; padding: 8px 16px; font-size: clamp(15px, 4.2vw, 22px); }
@@ -250,6 +258,7 @@
     <video id="vidbg" playsinline muted preload="auto" loop></video>
     <video id="vid" playsinline preload="auto"></video>
     <canvas id="freeze"></canvas>
+    <img id="poster" alt="" />
   </div>
   <audio id="tension" src="assets/suspense.mp3" loop preload="auto"></audio>
   <audio id="menubgm" src="assets/menu.mp3" loop preload="auto"></audio>
