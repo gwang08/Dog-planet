@@ -1,0 +1,16 @@
+[chapter1-v2b-scout.mp4]
+Status: success
+Result:
+```json
+[
+  {
+    "start": 1.258,
+    "end": 3.738,
+    "text": "An operation this big."
+  },
+  {
+    "start": 4.608,
+    "end": 6.948,
+    "text": "I need to find its weak point first."
+  }
+]

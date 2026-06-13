@@ -66,8 +66,12 @@
     }
   });
 
-  // failsafe: if it still reaches the very end, loop (choice mode) or open choices
-  vid.addEventListener('ended', () => { if (choiceMode) loopTail(); else showChoices(); });
+  // on end: loop tail (in choice mode) · auto-advance transition scenes · else open choices
+  vid.addEventListener('ended', () => {
+    if (choiceMode) { loopTail(); return; }
+    if (node.auto && node.choices && node.choices.length) { playNode(node.choices[0].next); return; }
+    showChoices();
+  });
 
   // keyboard shortcuts for choices (1 / 2 …)
   addEventListener('keydown', (e) => {

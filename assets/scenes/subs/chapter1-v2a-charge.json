@@ -1,0 +1,21 @@
+[chapter1-v2a-charge.mp4]
+Status: success
+Result:
+```json
+[
+  {
+    "start": 0.449,
+    "end": 2.279,
+    "text": "Pump.fun burned my home."
+  },
+  {
+    "start": 2.459,
+    "end": 4.609,
+    "text": "Time to burn it down!"
+  },
+  {
+    "start": 4.909,
+    "end": 5.959,
+    "text": "No more hiding."
+  }
+]
