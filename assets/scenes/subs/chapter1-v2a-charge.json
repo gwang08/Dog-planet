@@ -4,18 +4,18 @@ Result:
 ```json
 [
   {
-    "start": 0.449,
-    "end": 2.279,
+    "start": 0.507,
+    "end": 2.277,
     "text": "Pump.fun burned my home."
   },
   {
-    "start": 2.459,
-    "end": 4.609,
-    "text": "Time to burn it down!"
+    "start": 2.657,
+    "end": 4.607,
+    "text": "Time to burn it down."
   },
   {
-    "start": 4.909,
-    "end": 5.959,
+    "start": 4.977,
+    "end": 5.927,
     "text": "No more hiding."
   }
 ]

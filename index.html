@@ -142,11 +142,15 @@
     #start .bg-planet { opacity: .22; width: 40vw; }
     #start .think { display: none; }
   }
-  /* responsive: gameplay video — avoid heavy crop on portrait phones */
-  @media (max-aspect-ratio: 1/1) { #vid { object-fit: contain; } }
-  @media (max-width: 600px) {
-    #sub { bottom: 12%; padding: 9px 18px; }
-    #choices { padding: 0 16px 12%; gap: 12px; }
+  /* responsive: portrait/phone — video is letterboxed (object-fit:contain), so pin the
+     subtitle just INSIDE the video's lower edge instead of in the black bar below it.
+     Contained 16:9 video height = 56.25vw, vertically centered → bottom edge sits at
+     (50vh - 28.125vw) from screen bottom. */
+  @media (max-aspect-ratio: 1/1) {
+    #vid { object-fit: contain; }
+    #sub { bottom: calc(50vh - 28.125vw + 14px); max-width: 94%; padding: 8px 16px;
+           font-size: clamp(15px, 4.2vw, 22px); }
+    #choices { justify-content: flex-end; padding: 0 14px 7%; gap: 12px; }
     .choice { padding: 13px 16px; }
   }
 

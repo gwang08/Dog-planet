@@ -4,33 +4,33 @@ Result:
 ```json
 [
   {
-    "start": 0.407,
-    "end": 0.697,
+    "start": 0.366,
+    "end": 0.596,
     "text": "Stop!"
   },
   {
-    "start": 0.967,
-    "end": 3.197,
+    "start": 0.996,
+    "end": 3.196,
     "text": "You can't destroy that ship."
   },
   {
-    "start": 5.178,
-    "end": 7.038,
+    "start": 5.096,
+    "end": 7.156,
     "text": "Step aside, Moodang."
   },
   {
-    "start": 8.788,
-    "end": 10.398,
+    "start": 8.784,
+    "end": 10.374,
     "text": "Pump.fun burned my home."
   },
   {
-    "start": 10.618,
-    "end": 12.028,
+    "start": 10.454,
+    "end": 12.394,
     "text": "That ship goes down!"
   },
   {
-    "start": 13.348,
-    "end": 15.358,
+    "start": 13.374,
+    "end": 15.354,
     "text": "I can't stop you, can I?"
   }
 ]

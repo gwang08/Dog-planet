@@ -4,98 +4,43 @@ Result:
 ```json
 [
   {
-    "start": 0.088,
-    "end": 0.448,
-    "text": "Ah"
+    "start": 2.016,
+    "end": 2.506,
+    "text": "Ugh."
   },
   {
-    "start": 0.508,
-    "end": 0.818,
-    "text": "Ah"
+    "start": 2.876,
+    "end": 3.496,
+    "text": "Ugh."
   },
   {
-    "start": 1.058,
-    "end": 1.258,
-    "text": "Ah"
+    "start": 3.996,
+    "end": 4.566,
+    "text": "Ugh."
   },
   {
-    "start": 1.308,
-    "end": 1.638,
-    "text": "Ah"
-  },
-  {
-    "start": 1.708,
-    "end": 2.018,
-    "text": "Ah"
-  },
-  {
-    "start": 2.238,
-    "end": 2.508,
-    "text": "Ah"
-  },
-  {
-    "start": 2.768,
-    "end": 3.018,
-    "text": "Ah"
-  },
-  {
-    "start": 3.288,
-    "end": 3.518,
-    "text": "Ah"
-  },
-  {
-    "start": 3.658,
-    "end": 3.868,
-    "text": "Ah"
-  },
-  {
-    "start": 4.098,
-    "end": 4.418,
-    "text": "Ah"
-  },
-  {
-    "start": 4.548,
-    "end": 4.798,
-    "text": "Ah"
-  },
-  {
-    "start": 4.968,
-    "end": 5.228,
-    "text": "Ah"
-  },
-  {
-    "start": 5.438,
-    "end": 5.678,
-    "text": "Ah"
-  },
-  {
-    "start": 5.758,
-    "end": 6.008,
-    "text": "Ah"
-  },
-  {
-    "start": 6.088,
-    "end": 6.308,
-    "text": "Uh-uh"
-  },
-  {
-    "start": 6.948,
-    "end": 7.848,
+    "start": 5.106,
+    "end": 5.666,
     "text": "Where am I?"
   },
   {
-    "start": 10.748,
-    "end": 14.128,
-    "text": "Is this Dog Planet? My home?"
+    "start": 6.516,
+    "end": 7.036,
+    "text": "Where am I?"
   },
   {
-    "start": 16.712,
-    "end": 17.612,
-    "text": "This isn't home!"
+    "start": 10.511,
+    "end": 13.941,
+    "text": "Is this Dog Planet, my home?"
   },
   {
-    "start": 18.252,
-    "end": 23.362,
-    "text": "That airship can, the pump.fun mothership. So the legends were real."
+    "start": 16.351,
+    "end": 17.441,
+    "text": "No, this isn't home."
+  },
+  {
+    "start": 17.821,
+    "end": 23.401,
+    "text": "That airship fam, the pump.fun mothership. So the legends were real."
   }
 ]

@@ -1,0 +1,26 @@
+[chapter1-v4-penguin.mp4]
+Status: success
+Result:
+```json
+[
+  {
+    "start": 0.817,
+    "end": 3.407,
+    "text": "Time to tear this ship apart."
+  },
+  {
+    "start": 4.609,
+    "end": 7.749,
+    "text": "Touch my ship and you're scrap mutt."
+  },
+  {
+    "start": 8.529,
+    "end": 12.399,
+    "text": "I run pump.fun, pump and dump is forever."
+  },
+  {
+    "start": 12.787,
+    "end": 14.937,
+    "text": "Not anymore, this ship ends tonight."
+  }
+]

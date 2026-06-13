@@ -1,0 +1,21 @@
+[chapter1-v5b-trapped.mp4]
+Status: success
+Result:
+```json
+[
+  {
+    "start": 0.54,
+    "end": 2.21,
+    "text": "Charging and blind,"
+  },
+  {
+    "start": 2.62,
+    "end": 3.2,
+    "text": "foolish."
+  },
+  {
+    "start": 3.73,
+    "end": 6.13,
+    "text": "Pump.fun always wins."
+  }
+]

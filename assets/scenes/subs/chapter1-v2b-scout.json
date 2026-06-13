@@ -4,13 +4,13 @@ Result:
 ```json
 [
   {
-    "start": 1.258,
-    "end": 3.738,
+    "start": 1.48,
+    "end": 3.0,
     "text": "An operation this big."
   },
   {
-    "start": 4.608,
-    "end": 6.948,
+    "start": 4.67,
+    "end": 6.83,
     "text": "I need to find its weak point first."
   }
 ]
