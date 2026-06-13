@@ -44,7 +44,7 @@ function startChapter(i){
   $('splashCh').textContent='CHAPTER '+(i+1); $('splashWd').textContent=ch.world;
   show('splash'); gs=ST.SPLASH; splashT=110;
 }
-function afterSplash(){ const ch=CHAPTERS[chIdx];
+function afterSplash(){ if(gs!==ST.SPLASH) return; const ch=CHAPTERS[chIdx];
   EX.start(ch); scene='explore'; gs=ST.EXPLORE; }   // EX plays the cinematic wake-up, then the intro dialogue
 function startBoss(){ const ch=CHAPTERS[chIdx];
   playDialogue(ch.bossIntro, ()=>{ CB.start(ch); buildSkills(); scene='boss'; gs=ST.BOSS; setHUD(true); }); }
@@ -82,7 +82,7 @@ function loop(ts){
   if(cam.shake>0.2) cam.shake*=0.88; else cam.shake=0;
   const ox=cam.shake>0.2?(Math.random()-0.5)*cam.shake:0, oy=cam.shake>0.2?(Math.random()-0.5)*cam.shake:0;
   // update
-  if(gs===ST.SPLASH){ if(--splashT<=0) afterSplash(); }
+  // splash waits for the player to press CONTINUE (no auto-skip)
   if(!dlg){ if(gs===ST.EXPLORE) EX.update(); else if(gs===ST.BOSS){ CB.update(); updateHUD(); } }
   // draw scene
   ctx.save(); ctx.translate(ox,oy);
@@ -106,6 +106,8 @@ $('vnSkip').onclick=()=>{ while(dlg) advanceDialogue(); };
 $('dodgeBtn').onclick=()=>{ if(gs===ST.BOSS) CB.dodge(); };
 $('playBtn').onclick=()=>{ saved=0; localStorage.setItem('dp_chapter',0); startGame(0); };
 $('contBtn').onclick=()=>startGame(Math.min(saved,CHAPTERS.length-1));
+$('splashNext').onclick=()=>afterSplash();
+$('splash').addEventListener('click', e=>{ if(e.target.id!=='splashNext') afterSplash(); });
 $('vicNext').onclick=()=>startChapter(chIdx+1);
 $('winAgain').onclick=()=>startGame(0);
 $('overRetry').onclick=()=>{ const ch=CHAPTERS[chIdx]; CB.start(ch); buildSkills(); scene='boss'; gs=ST.BOSS; setHUD(true); hideAll(); };
