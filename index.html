@@ -16,6 +16,10 @@
   #vidbg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
     filter: blur(30px) brightness(.55) saturate(1.15); transform: scale(1.25); z-index: 0; pointer-events: none; }
   #vid { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; background: transparent; }
+  /* frozen last frame of the previous scene — appears instantly, then cross-dissolves to the new video */
+  #freeze { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2;
+    opacity: 0; pointer-events: none; transition: opacity .45s ease; }
+  #freeze.show { opacity: 1; transition: none; }
 
   /* subtitle bar (typed, synced to audio) — cinematic film style */
   #sub {
@@ -161,6 +165,7 @@
      (50vh - 28.125vw) from screen bottom. */
   @media (max-aspect-ratio: 1/1) {
     #vid { object-fit: contain; }
+    #freeze { object-fit: contain; }
     /* video is letterboxed (blurred fill); put subtitle BELOW the video in the lower area
        so it never covers the picture */
     #sub { bottom: 7%; max-width: 94%; padding: 8px 16px; font-size: clamp(15px, 4.2vw, 22px); }
@@ -193,6 +198,7 @@
   <div id="stage">
     <video id="vidbg" playsinline muted preload="auto" loop></video>
     <video id="vid" playsinline preload="auto"></video>
+    <canvas id="freeze"></canvas>
   </div>
   <audio id="tension" src="assets/suspense.mp3" loop preload="auto"></audio>
 

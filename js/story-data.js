@@ -22,17 +22,17 @@ const STORY = {
     V2A: {
       video: 'assets/scenes/chapter1-v2a-charge.mp4', auto: true,
       subs: [
-        { s: 0.5, e: 2.3, t: 'Pump.fun burned my home.' },
-        { s: 2.6, e: 4.6, t: 'Time to burn it down.' },
-        { s: 5.0, e: 5.9, t: 'No more hiding.' },
+        { s: 0.3, e: 2.3, t: 'Pump.fun burned my home.' },
+        { s: 3.6, e: 5.6, t: 'Time to burn it down.' },
+        { s: 6.3, e: 7.9, t: 'No more hiding.' },
       ],
       choices: [ { t: 'Continue', next: 'V3' } ],
     },
     V2B: {
       video: 'assets/scenes/chapter1-v2b-scout.mp4', auto: true,
       subs: [
-        { s: 1.5, e: 3.0, t: 'An operation this big…' },
-        { s: 4.7, e: 6.8, t: 'I need to find its weak point first.' },
+        { s: 3.7, e: 5.3, t: 'An operation this big…' },
+        { s: 6.0, e: 8.1, t: 'I need to find its weak point first.' },
       ],
       choices: [ { t: 'Continue', next: 'V3' } ],
     },
@@ -83,7 +83,10 @@ const STORY = {
     },
     ENDTRUE: {
       video: 'assets/scenes/chapter1-endtrue-chase.mp4',
-      subs: [ { s: 3.2, e: 5.0, t: "This isn't finished!" } ],
+      subs: [
+        { s: 3.0, e: 6.9,  t: "This isn't finished!" },
+        { s: 8.5, e: 13.1, t: 'Run all you want, Penguin — I’ll chase you to the moon and back!' },
+      ],
       note: 'CHAPTER 1 COMPLETE — Chapter 2: COMING SOON',
       choices: [ { t: '◀ Play again', next: 'V1' } ],
     },

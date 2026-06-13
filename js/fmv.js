@@ -5,7 +5,7 @@
 // BACK button returns to the previous decision so you can take a different path.
 (function () {
   const $ = (id) => document.getElementById(id);
-  const vid = $('vid'), vidbg = $('vidbg'), subEl = $('sub'), choicesEl = $('choices'),
+  const vid = $('vid'), vidbg = $('vidbg'), freeze = $('freeze'), subEl = $('sub'), choicesEl = $('choices'),
         noteEl = $('note'), startEl = $('start'), fadeEl = $('fade'), backBtn = $('backBtn'),
         tension = $('tension');
 
@@ -43,21 +43,26 @@
 
   // fade through black, then switch scene
   function go(id, isBack) {
-    // keep the suspense music playing THROUGH the fade; setNode() stops it when the new scene starts
-    fadeEl.classList.add('show');
-    setTimeout(() => {
-      setNode(id);
-      // reveal only once the new video actually has a frame → no black flash / fake "lag"
-      let done = false;
-      const reveal = () => { if (done) return; done = true; fadeEl.classList.remove('show', 'busy');
-        vid.removeEventListener('loadeddata', reveal); vid.removeEventListener('playing', reveal); };
-      if (vid.readyState >= 2) reveal();
-      else {
-        vid.addEventListener('loadeddata', reveal); vid.addEventListener('playing', reveal);
-        setTimeout(() => { if (!done) fadeEl.classList.add('busy'); }, 350); // spinner if still buffering
-        setTimeout(reveal, 4000); // hard fallback so it never sticks
+    // smoothest transition: freeze the current frame, switch the video underneath, then
+    // cross-dissolve from the frozen frame to the new scene — no black gap at all.
+    try {
+      if (vid.videoWidth) {
+        freeze.width = vid.videoWidth; freeze.height = vid.videoHeight;
+        freeze.getContext('2d').drawImage(vid, 0, 0);
+        freeze.classList.add('show');
       }
-    }, 240);
+    } catch (e) {}
+    setNode(id); // suspense music keeps playing; setNode() stops it as the new scene starts
+    let done = false;
+    const reveal = () => { if (done) return; done = true;
+      freeze.classList.remove('show'); fadeEl.classList.remove('show', 'busy');
+      vid.removeEventListener('loadeddata', reveal); vid.removeEventListener('playing', reveal); };
+    if (vid.readyState >= 2) setTimeout(reveal, 40);
+    else {
+      vid.addEventListener('loadeddata', reveal); vid.addEventListener('playing', reveal);
+      setTimeout(() => { if (!done) fadeEl.classList.add('show', 'busy'); }, 600); // spinner only if really slow
+      setTimeout(reveal, 4000);
+    }
   }
 
   function navigate(next) { // forward via a choice — remember decision points for BACK
