@@ -126,11 +126,11 @@ const STORY = {
     C2V3: {
       video: 'assets/scenes/ch2/chapter2-v3.mp4', auto: true,
       subs: [
-        { s: 0.1, e: 2.6, t: 'You followed me all the way to the moon?' },
-        { s: 2.9, e: 4.0, t: 'Persistent little mutt.' },
-        { s: 4.1, e: 5.5, t: "Where's the Pump.fun core, Penguin?" },
-        { s: 5.9, e: 6.8, t: "Oh, I'm done with you." },
-        { s: 7.1, e: 8.6, t: 'Meet someone who isn’t…' },
+        { s: 0.8,  e: 3.0,  t: 'You followed me all the way to the moon?' },
+        { s: 4.2,  e: 6.1,  t: 'Persistent little mutt.' },
+        { s: 6.8,  e: 9.1,  t: "Where's the Pump.fun core, Penguin?" },
+        { s: 9.9,  e: 12.2, t: "Oh, I'm done with you." },
+        { s: 13.5, e: 15.2, t: 'Meet someone who isn’t…' },
       ],
       choices: [ { t: 'Continue', next: 'C2V4' } ],
     },
@@ -159,10 +159,11 @@ const STORY = {
     C2ENDTRUE: {
       video: 'assets/scenes/ch2/chapter2-endtrue.mp4',
       subs: [
-        { s: 0.1, e: 1.9, t: 'The Pump.fun core…' },
-        { s: 2.2, e: 5.1, t: "It's alive — and it's fleeing deeper." },
-        { s: 5.7, e: 6.9, t: "This isn't over." },
-        { s: 7.1, e: 8.8, t: "I'm coming for the heart of it all." },
+        { s: 2.3,  e: 4.1,  t: 'The Pump.fun core…' },
+        { s: 5.1,  e: 6.3,  t: "It's alive." },
+        { s: 7.3,  e: 9.2,  t: "And it's… fleeing deeper." },
+        { s: 11.5, e: 12.4, t: "This isn't over." },
+        { s: 12.8, e: 15.0, t: "I'm coming for the heart of it all." },
       ],
       note: 'CHAPTER 2 COMPLETE — Chapter 3: COMING SOON',
       choices: [ { t: '🗺 Journey Map', next: 'MAP' }, { t: '↻ Play Chapter 2 again', next: 'C2V1' } ],
