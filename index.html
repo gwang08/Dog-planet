@@ -65,12 +65,27 @@
   }
   #note.show { opacity: 1; }
 
-  /* mute button */
+  /* top buttons */
   #muteBtn {
     position: fixed; top: 14px; right: 16px; z-index: 6; cursor: pointer;
     width: 44px; height: 44px; border: none; border-radius: 50%;
     background: rgba(0,0,0,.5); color: #fff; font-size: 20px;
   }
+  #backBtn {
+    position: fixed; top: 14px; left: 16px; z-index: 6; cursor: pointer;
+    width: 44px; height: 44px; border: none; border-radius: 50%;
+    background: rgba(0,0,0,.5); color: #fff; font-size: 18px; display: none;
+    align-items: center; justify-content: center;
+  }
+  #backBtn.show { display: flex; }
+  #backBtn:hover { background: rgba(255,59,107,.7); }
+
+  /* smooth scene transition (fade through black) */
+  #fade {
+    position: fixed; inset: 0; z-index: 17; background: #000;
+    opacity: 0; pointer-events: none; transition: opacity .4s ease;
+  }
+  #fade.show { opacity: 1; }
 
   /* ===== landing page (start menu) — restored MAME hero layout ===== */
   #start {
@@ -164,6 +179,8 @@
   <div id="sub"></div>
   <div id="note"></div>
   <div id="choices"></div>
+  <div id="fade"></div>
+  <button id="backBtn" title="Back / change choice">◀</button>
   <button id="muteBtn">🔊</button>
 
   <div id="start">
